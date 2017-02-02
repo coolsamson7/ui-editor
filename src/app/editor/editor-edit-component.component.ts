@@ -77,7 +77,7 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
         // decorations?
 
         let comp : any =  this.componentRef;
-        let ngComp = comp._hostElement.elementRef.nativeElement;
+        let ngComp = comp._nativeElement;//_hostElement.elementRef.nativeElement;
 
         this.component.decorate(this.model, ngComp.firstChild);
 

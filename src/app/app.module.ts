@@ -47,6 +47,7 @@ import {FocusDirective} from "./util/util-focus";
 import {Breadcrumb} from "./widgets/widgets-breadcrumb";
 import {Floater, Floating} from "./widgets/widgets-floater";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {CommonModule} from "@angular/common";
 
 
 const services = [
@@ -103,7 +104,7 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [
+  declarations: [ EditComponent,
     ...components,
 
     ContextMenu, MenuContent,
@@ -111,6 +112,7 @@ const components = [
     AppComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     FormsModule,
     HttpModule,
@@ -128,6 +130,12 @@ const components = [
     ToastContainer,
     TooltipComponent,
     OpenFileDialog
+  ],
+  exports: [
+    ...components,
+
+    CommonModule,
+    FormsModule,
   ],
   bootstrap: [AppComponent]
 })
