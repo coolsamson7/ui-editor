@@ -1,0 +1,121 @@
+
+.breadcrumbs {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background-color: #f5f5f5;
+
+  ul {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    &:before, &:after {
+      content: ' ';
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+
+
+    li {
+      float: left;
+      min-width: 4em;
+    }
+  }
+
+  a {
+    position: relative;
+    display: block;
+    padding-right: 0 !important; /* important overrides media queries */
+    text-align: center;
+    color: black;
+    cursor: pointer;
+  }
+
+  a:hover {
+    background: #eee;
+  }
+
+  a.active {
+    color: #777;
+    background-color: #fafafa;
+  }
+
+  a:before, a:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 1;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 4px solid transparent;
+  }
+
+  a:before {
+    margin-left: 1px;
+    border-left-color: #d5d5d5;
+  }
+
+  a:after {
+    border-left-color: #f5f5f5;
+  }
+
+  a:hover:after {
+    border-left-color: #eee;
+  }
+
+  a.active:after {
+    border-left-color: #fafafa;
+  }
+
+  li:last-child a:before, li:last-child a:after {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .breadcrumbs a {
+    padding: 15px;
+  }
+  .breadcrumbs a:before,
+  .breadcrumbs a:after {
+    border-top-width: 26px;
+    border-bottom-width: 26px;
+    border-left-width: 13px;
+  }
+}
+
+@media (max-width: 620px) {
+  .breadcrumbs a {
+    padding: 10px;
+    font-size: 12px;
+  }
+  .breadcrumbs a:before,
+  .breadcrumbs a:after {
+    border-top-width: 22px;
+    border-bottom-width: 22px;
+    border-left-width: 11px;
+  }
+}
+
+@media (max-width: 520px) {
+  .breadcrumbs a {
+    padding: 5px;
+  }
+
+  .breadcrumbs a:before,
+  .breadcrumbs a:after {
+    border-top-width: 16px;
+    border-bottom-width: 16px;
+    border-left-width: 8px;
+  }
+}

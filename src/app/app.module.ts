@@ -129,6 +129,9 @@ const components = [
     Floater,
     ToastContainer,
     TooltipComponent,
+
+    // dialogs
+
     OpenFileDialog
   ],
   exports: [

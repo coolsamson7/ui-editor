@@ -104,9 +104,22 @@ export class Dialog implements OnDestroy {
     selector: 'open-file-dialog',
     //templateUrl: '/portal/template/demo/openFile.html' // TODO -> add dialog stuff
   template: `
-<div layout:fragment="body">
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title" id="modal-title">{{title}}</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
     <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
-</div>`
+</div>
+
+<div class="modal-footer">
+    <!--  [focus]="button.isDefault" -->
+    <button type="button" [ngClass]="{'btn-primary': button.isDefault, 'btn-secondary': !button.isDefault}" class="btn" *ngFor="let button of buttons" (click)="clicked(button)">{{label(button)}}</button>
+</div>
+`
 })
 export class OpenFileDialog extends Dialog {
     // instance data
@@ -161,7 +174,7 @@ Injectable()
     host: {
         'style': 'height: 100%'
     },
-    template: `<template ngbModalContainer></template>
+    template: `
 <div class="ui-editor flex-rows" toast-container="">
    <split-pane class="flex-row flex-stretch">
       <!-- left -->
