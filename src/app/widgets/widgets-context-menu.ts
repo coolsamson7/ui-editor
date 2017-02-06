@@ -469,9 +469,11 @@ export class ConfirmWindow extends Overlay implements AfterViewInit {
     // AfterViewInit
 
     ngAfterViewInit(): void {
+      setTimeout(() => {
         let position = this.calcPosition(this.element.nativeElement.children[0]);
 
         this.move(position.left, position.top);
+      }, 0);
     }
 }
 
