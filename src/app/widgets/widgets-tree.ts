@@ -1,21 +1,21 @@
 import {
-    Component,
-    AfterViewInit,
-    SkipSelf,
-    Optional,
-    forwardRef,
-    Inject,
-    Input,
-    Injectable,
-    ComponentFactory,
-    Compiler,
-    NgModule,
-    ViewContainerRef,
-    ViewChild,
-    ComponentRef,
-    OnChanges,
-    SimpleChanges,
-    OnDestroy, ElementRef
+  Component,
+  AfterViewInit,
+  SkipSelf,
+  Optional,
+  forwardRef,
+  Inject,
+  Input,
+  Injectable,
+  ComponentFactory,
+  Compiler,
+  NgModule,
+  ViewContainerRef,
+  ViewChild,
+  ComponentRef,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy, ElementRef, OnInit
 } from "@angular/core";
 
 import {DragSource, DropTarget} from "../ui/ui-dd.class";
@@ -150,10 +150,6 @@ export class NodeContent implements OnChanges {
 <div *ngIf="isExpanded || children" [hidden]="!isExpanded">
     <li treeNode *ngFor="let child of model.children" [model]="child"></li>
 </div>
-
-<!--div *ngIf="isExpanded">
-  <li treeNode *ngFor="let child of model.children" [model]="child"></li>
-</div-->
 `
 })
 export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
@@ -320,10 +316,6 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
         this.isExpanded = !this.isExpanded;
     }
 
-    ngOnInit() {
-        //console.log('create tree node ' + this.model.label);
-    }
-
     // OnDestroy
 
     ngOnDestroy() {
@@ -357,7 +349,7 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
 
     //directives: [TreeNode]
 })
-export class TreeComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class TreeComponent implements OnChanges, OnInit, OnDestroy {
     // instance data
 
     @Input('model')
@@ -445,9 +437,9 @@ export class TreeComponent implements OnChanges, AfterViewInit, OnDestroy {
             onDelete();
     }
 
-    // AfterViewInit
+    // OnInit
 
-    ngAfterViewInit(): void {
+    ngOnInit(): void {
         this.model.tree = this;
 
         this.model.onSelect.subscribe((component) => {

@@ -1,4 +1,4 @@
-import {Input, Component, OnDestroy, HostListener} from "@angular/core";
+import {Input, Component, OnDestroy, HostListener, AfterViewInit} from "@angular/core";
 import {ComponentRegistry} from "./editor-component.class";
 import {Shortcut} from "../ui/ui-shortcut";
 import {EditComponent} from "./editor-edit-component.component";
@@ -58,7 +58,7 @@ export class Editable {
 </div>
    `
 })
-export class EditorComponent extends Editable implements OnDestroy {
+export class EditorComponent extends Editable implements OnDestroy, AfterViewInit {
     // data
 
     @Input('root')

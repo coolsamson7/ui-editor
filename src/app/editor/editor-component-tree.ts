@@ -11,7 +11,7 @@ import {TreeComponent} from "../widgets/widgets-tree";
    <tree [model]="model"></tree>
 </div>`
 })
-export class ComponentTreeComponent implements AfterViewInit, OnInit, OnDestroy {
+export class ComponentTreeComponent implements OnInit {
     // instance data
 
     @Input()
@@ -70,16 +70,5 @@ export class ComponentTreeComponent implements AfterViewInit, OnInit, OnDestroy 
       this.model.onSelect.subscribe((selection) => {
         this.tree.expandPath(this.createPath(selection));
       });
-    }
-
-    // AfterViewInit
-
-    ngAfterViewInit(): void {
-
-    }
-
-    // OnDestroy
-
-    ngOnDestroy(): void {
     }
 }
