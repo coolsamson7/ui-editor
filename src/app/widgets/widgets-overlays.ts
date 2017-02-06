@@ -1,6 +1,6 @@
 import {
-    ViewContainerRef, ComponentFactoryResolver, ComponentRef, ApplicationRef, Type,
-    Injectable, AfterViewInit, ElementRef, ChangeDetectorRef
+  ViewContainerRef, ComponentFactoryResolver, ComponentRef, ApplicationRef, Type,
+  Injectable, AfterViewInit, ElementRef, ChangeDetectorRef, Component
 } from "@angular/core";
 
 
@@ -153,7 +153,7 @@ export class Overlay {
 export class Overlays {
     // instance data
 
-    private rootViewContainerRef: ViewContainerRef;
+     rootViewContainerRef: ViewContainerRef;
 
     // constructor
 
@@ -194,4 +194,15 @@ export class Overlays {
 
         return this.rootViewContainerRef;
     }
+}
+
+@Component({
+  selector: 'overlay-container',
+  template: '<div></div>'
+})
+@Injectable()
+export class OverlayContainer {
+  constructor(viewContainer : ViewContainerRef, overlays : Overlays) {
+    overlays.rootViewContainerRef = viewContainer;
+  }
 }

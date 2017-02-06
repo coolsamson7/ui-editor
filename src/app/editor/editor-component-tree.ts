@@ -67,14 +67,15 @@ export class ComponentTreeComponent implements AfterViewInit, OnInit, OnDestroy 
     // OnInit
 
     ngOnInit(): void {
+      this.model.onSelect.subscribe((selection) => {
+        this.tree.expandPath(this.createPath(selection));
+      });
     }
 
     // AfterViewInit
 
     ngAfterViewInit(): void {
-        this.model.onSelect.subscribe((selection) => {
-            this.tree.expandPath(this.createPath(selection));
-        });
+
     }
 
     // OnDestroy

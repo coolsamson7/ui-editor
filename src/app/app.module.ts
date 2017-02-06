@@ -22,7 +22,7 @@ import {EditorObjects} from "./editor/editor-core-objects";
 import {EditorService} from "./editor/editor-service";
 import {Shortcut} from "./ui/ui-shortcut";
 import {ToastService, ToastContainer, SetToastContainer, Toast} from "./widgets/widgets-toast";
-import {Overlays} from "./widgets/widgets-overlays";
+import {Overlays, OverlayContainer} from "./widgets/widgets-overlays";
 import {DownloadService} from "./util/util-download";
 import {DragSourceComponent, DropTargetComponent} from "./ui/ui-dd.directive";
 import {ComponentGroupComponent, PaletteComponent} from "./editor/editor-palette.component";
@@ -70,7 +70,9 @@ const services = [
 ];
 
 const components = [
-  NgTableComponent,NgTableSortingDirective,
+  OverlayContainer,
+
+  NgTableComponent, NgTableSortingDirective,
 
   UIEditorComponent, EditComponent, RenderComponent, ComponentDirective, PropertyEditorComponent, EditorComponent, ValueOrBindingEditor,ComponentTreeComponent,
   PaletteComponent, ComponentEditorComponent, EditorGroupComponent, PropertyLabelComponent, ComponentGroupComponent,
