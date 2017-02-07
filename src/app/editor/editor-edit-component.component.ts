@@ -28,7 +28,7 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
 
     @Input('model')
     private model : any;
-    @Input('context') context: any;
+    @Input('context') context : any;
     private component : UIComponent;
     private componentRef : ComponentRef<any>;
     private changeDetector : ChangeDetector;
@@ -37,7 +37,7 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
 
     // constructor
 
-    constructor(private container: ViewContainerRef, private componentBuilder : ComponentFactoryBuilder, private componentRegistry : ComponentRegistry) {
+    constructor(private container : ViewContainerRef, private componentBuilder : ComponentFactoryBuilder, private componentRegistry : ComponentRegistry) {
     }
 
     // private
@@ -76,7 +76,7 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
 
         // decorations?
 
-        let comp : any =  this.componentRef;
+        let comp : any = this.componentRef;
         let ngComp = comp._nativeElement;//_hostElement.elementRef.nativeElement;
 
         this.component.decorate(this.model, ngComp.firstChild);
@@ -106,14 +106,14 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
 
             if (this.componentRef && this.model.id == "col")
                 ComponentDirective.increaseCounter(this.model.$parent);  // HACK to force the row to be updated
-             else
-                 this.update();
+            else
+                this.update();
         } // if
     }
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         this.component = this.componentRegistry.find(this.model.id);
         this.component.setupChangeDetector(this.changeDetector = new ChangeDetector(), this.model);
 
@@ -128,7 +128,6 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
     ngOnDestroy() {
     }
 }
-
 
 
 @Injectable()
@@ -153,21 +152,22 @@ export class ComponentDirective implements OnChanges, DoCheck, OnDestroy {
     <component [model]="model" [context]="context"></component>
 </div>
 `//,
-  //inputs: ['model']
+    //inputs: ['model']
 })
 export class EditComponent extends Editable implements OnChanges, OnDestroy {
     // input
 
     @Input('model')
-    public set _model(model: any) {
+    public set _model(model : any) {
         this.model = model;
     }
-    @Input('context') context: any;
+
+    @Input('context') context : any;
 
     @ViewChild(ComponentDirective) component : ComponentDirective;
 
-    _dropped : (any) => void = this.dropped.bind(this) ;
-    _dropAllowed : (any) => boolean  = this.dropAllowed.bind(this) ;
+    _dropped : (any) => void = this.dropped.bind(this);
+    _dropAllowed : (any) => boolean = this.dropAllowed.bind(this);
 
 
     private confirm : any;
@@ -188,7 +188,8 @@ export class EditComponent extends Editable implements OnChanges, OnDestroy {
             onOk: () => {
                 this.onDelete(undefined);
             },
-            onCancel: () => {},
+            onCancel: () => {
+            },
         };
     }
 
@@ -196,7 +197,7 @@ export class EditComponent extends Editable implements OnChanges, OnDestroy {
 
     private isChildOf(component : any) : boolean {
         let node : Editable = this.parent;
-        while ( node ) {
+        while (node) {
             if (node.model === component)
                 return true;
 
@@ -260,7 +261,7 @@ export class EditComponent extends Editable implements OnChanges, OnDestroy {
         //if (component.$parent) {
         //    let index = component.$parent.children.indexOf(component);
 
-       //     component.$parent.children.splice(index, 1);
+        //     component.$parent.children.splice(index, 1);
         //}
 
         // add to new parent
@@ -318,7 +319,7 @@ export class EditComponent extends Editable implements OnChanges, OnDestroy {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         this.component.editable = this;
 
         if (this.editor.selection && this.editor.selection.model === this.model) {

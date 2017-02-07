@@ -8,7 +8,9 @@ import {
     Component,
     OnDestroy,
     ViewChild,
-    ElementRef, OnInit, AfterViewInit
+    ElementRef,
+    OnInit,
+    AfterViewInit
 } from "@angular/core";
 import {Overlay, Overlays} from "./widgets-overlays";
 
@@ -135,16 +137,16 @@ class MenuElement {
     </svg>
 `
 })
-export class TriangleComponent implements OnInit  {
+export class TriangleComponent implements OnInit {
     // input data
 
     @Input() width : number;
     @Input() height : number;
 
     @ViewChild("polygon")
-    private polygon: ElementRef;
+    private polygon : ElementRef;
     @ViewChild("svg")
-    private svg: ElementRef;
+    private svg : ElementRef;
 
     // private
 
@@ -182,7 +184,7 @@ export class TriangleComponent implements OnInit  {
 
     // OnInit
 
-    ngOnInit(): void {
+    ngOnInit() : void {
         this
             .addPoint(0, 0)
             .addPoint(this.width, this.height / 2)
@@ -208,7 +210,7 @@ export class MenuContent extends MenuElement {
     // instance data
 
     @ViewChild("container")
-    private container: ElementRef;
+    private container : ElementRef;
 
     private menuItem : any;
 
@@ -216,7 +218,7 @@ export class MenuContent extends MenuElement {
 
     // constructor
 
-    constructor(protected element: ElementRef) {
+    constructor(protected element : ElementRef) {
         super();
     }
 
@@ -234,8 +236,8 @@ export class MenuContent extends MenuElement {
         }
 
         return {
-            left : left,
-            top : top
+            left: left,
+            top: top
         };
     }
 
@@ -281,7 +283,7 @@ export class MenuContent extends MenuElement {
         return {
             position: 'fixed',
             'z-index': '99999',
-            display:  'block'
+            display: 'block'
         };
     }
 
@@ -293,7 +295,7 @@ export class MenuContent extends MenuElement {
 
     move(x : number, y : number) {
         this.container.nativeElement.style.left = x + "px";
-        this.container.nativeElement.style.top  = y + "px";
+        this.container.nativeElement.style.top = y + "px";
     }
 }
 
@@ -308,7 +310,7 @@ export class ContextMenu extends MenuElement implements OnDestroy {
 
     // catch clicks outside of the hosting element
 
-    onDocumentMouseDown = (event: any) => {
+    onDocumentMouseDown = (event : any) => {
         if (this.child)
             if (!this.child.contains(event.target))
                 this.child.delete();
@@ -316,7 +318,7 @@ export class ContextMenu extends MenuElement implements OnDestroy {
 
     // constructor
 
-    constructor(protected viewContainerRef: ViewContainerRef, protected resolver: ComponentFactoryResolver) {
+    constructor(protected viewContainerRef : ViewContainerRef, protected resolver : ComponentFactoryResolver) {
         super();
     }
 
@@ -370,11 +372,11 @@ export class ContextMenu extends MenuElement implements OnDestroy {
         // link
 
         parent.child = menuContent;
-        menuContent.parent    = parent;
+        menuContent.parent = parent;
 
         // set data
 
-        menuContent.items     = items;
+        menuContent.items = items;
         menuContent.component = component;
 
         return menuContent;
@@ -433,7 +435,7 @@ export class ContextMenu extends MenuElement implements OnDestroy {
 })
 export class ConfirmWindow extends Overlay implements AfterViewInit {
     @ViewChild("container")
-    private container: ElementRef;
+    private container : ElementRef;
 
     options : any = {};
 
@@ -442,7 +444,7 @@ export class ConfirmWindow extends Overlay implements AfterViewInit {
 
     // constructor
 
-    constructor(public element: ElementRef) {
+    constructor(public element : ElementRef) {
         super();
     }
 
@@ -453,7 +455,7 @@ export class ConfirmWindow extends Overlay implements AfterViewInit {
             'z-index': 99999,
             position: 'fixed',
             color: 'black',
-            display:  'block'
+            display: 'block'
         };
     }
 
@@ -468,12 +470,12 @@ export class ConfirmWindow extends Overlay implements AfterViewInit {
 
     // AfterViewInit
 
-    ngAfterViewInit(): void {
-      setTimeout(() => {
-        let position = this.calcPosition(this.element.nativeElement.children[0]);
+    ngAfterViewInit() : void {
+        setTimeout(() => {
+            let position = this.calcPosition(this.element.nativeElement.children[0]);
 
-        this.move(position.left, position.top);
-      }, 0);
+            this.move(position.left, position.top);
+        }, 0);
     }
 }
 
@@ -489,7 +491,7 @@ export class Confirm implements OnDestroy {
 
     // catch clicks outside of the hosting element
 
-    onDocumentMouseDown = (event: any) => {
+    onDocumentMouseDown = (event : any) => {
         if (this.window)
             if (!this.window.instance.contains(event.target))
                 this.hide();
@@ -497,7 +499,7 @@ export class Confirm implements OnDestroy {
 
     // constructor
 
-    constructor(protected viewContainerRef: ViewContainerRef, private overlays : Overlays) {
+    constructor(protected viewContainerRef : ViewContainerRef, private overlays : Overlays) {
     }
 
     // private
@@ -519,32 +521,33 @@ export class Confirm implements OnDestroy {
     }
 
     private create() : ComponentRef<ConfirmWindow> {
-        return this.overlays.createOverlay(this.viewContainerRef.element.nativeElement, "right", ConfirmWindow, {options: {
-            position: this.options.position ? this.options.position : "bottom",
-            title: this.options.title ? this.options.title : "Title",
-            message: this.options.message ? this.options.message : "Message",
-            okText: this.options.ok ? this.options.ok : "Ok",
-            cancelText: this.options.cancel ? this.options.cancel : "Cancel",
-            onOk: () => {
-                if (this.options.onOk)
-                    this.options.onOk();
+        return this.overlays.createOverlay(this.viewContainerRef.element.nativeElement, "right", ConfirmWindow, {
+            options: {
+                position: this.options.position ? this.options.position : "bottom",
+                title: this.options.title ? this.options.title : "Title",
+                message: this.options.message ? this.options.message : "Message",
+                okText: this.options.ok ? this.options.ok : "Ok",
+                cancelText: this.options.cancel ? this.options.cancel : "Cancel",
+                onOk: () => {
+                    if (this.options.onOk)
+                        this.options.onOk();
 
-                this.hide();
-            },
-            onCancel: () => {
-                if (this.options.onCancel)
-                    this.options.onCancel();
+                    this.hide();
+                },
+                onCancel: () => {
+                    if (this.options.onCancel)
+                        this.options.onCancel();
 
-                this.hide();
+                    this.hide();
+                }
             }
-        }
         });
     }
 
     // event listener
 
     @HostListener('click', ['$event'])
-    toggle(event): void {
+    toggle(event) : void {
         if (this.window)
             this.hide();
         else

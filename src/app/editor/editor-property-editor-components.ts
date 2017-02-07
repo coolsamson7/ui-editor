@@ -44,10 +44,9 @@ export class BoxComponent implements OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (!this.model.box)
-            this.model.box = {
-            };
+            this.model.box = {};
 
         this.model = this.model.box;
     }
@@ -96,7 +95,7 @@ export class PropertyButton implements OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
     }
 }
 
@@ -139,7 +138,7 @@ export class PropertyChoiceButtons implements OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
     }
 }
 
@@ -181,7 +180,7 @@ export class PropertyChoiceCombo implements OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (this.model[this.property] == undefined)
             this.model[this.property] = this.values[0];
 
@@ -249,8 +248,8 @@ export class FontEditor implements OnChanges, OnDestroy {
 
     private checkProperty(object : any, property : string) {
         if (object.hasOwnProperty(property)) {
-           if (object[property] == undefined)
-               delete object[property];
+            if (object[property] == undefined)
+                delete object[property];
             else
                 return true;
         } // if
@@ -260,14 +259,14 @@ export class FontEditor implements OnChanges, OnDestroy {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (!this.model.font)
             this.model.font = {};
     }
 
     // OnDestroy
 
-    ngOnDestroy(): void {
+    ngOnDestroy() : void {
         let font = this.model.font;
 
         let nonEmpty =

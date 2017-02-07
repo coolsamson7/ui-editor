@@ -1,5 +1,4 @@
 import {Component, Compiler, NgModule, Injectable, ComponentFactory} from "@angular/core";
-
 import {Property} from "./editor-property.class";
 import {ChangeDetector} from "./editor-change-detector";
 import {DragSource} from "../ui/ui-dd.class";
@@ -10,14 +9,14 @@ import {AppModule} from "../app.module";
 export class UIComponent implements DragSource {
     // implement DragSource
 
-    create(): any {
+    create() : any {
         return this.createDefault();
 
     }
 
     // instance data
 
-    componentRegistry: ComponentRegistry;
+    componentRegistry : ComponentRegistry;
     _decorator : (model : any, nativeElement : any) => void;
     abstract = false;
     _inherits : string[];
@@ -27,18 +26,18 @@ export class UIComponent implements DragSource {
     label : string;
     icon : string;
     private propertyList : Property[] = [];
-    private properties : Map<string,Property>  = new Map<string,Property>();
+    private properties : Map<string,Property> = new Map<string,Property>();
     private _validParents : string[] = [];
     private _orientation : string = undefined; // 'hor'/vert; // vert
 
     // constructor
 
     constructor(id : string) {
-        this.id    = id;
+        this.id = id;
         this.label = id;
     }
 
-    register(property : Property) : UIComponent  {
+    register(property : Property) : UIComponent {
         this.propertyList.push(property);
         this.properties.set(property.name, property);
 
@@ -109,10 +108,10 @@ export class UIComponent implements DragSource {
 
         for (let property of this.propertyList)
             if (property.name !== "id" && property.name !== "children" /*&& model[property.name]*/) {
-                let def =  property.createDefault();
+                let def = property.createDefault();
 
                 if (property.compare(model[property.name], def, property.name, []) == true) {
-                    delete model[property.name] ;
+                    delete model[property.name];
                 }
             } // if
     }
@@ -126,7 +125,7 @@ export class UIComponent implements DragSource {
     public createDefault() : any {
         // for now...
 
-        let model =  {
+        let model = {
             id: this.id,
             children: []
         };
@@ -164,11 +163,11 @@ export class UIComponent implements DragSource {
 
     // protected
 
-    public findProperty (name) : Property  {
+    public findProperty(name) : Property {
         return this.properties.get(name);
     }
 
-    protected getProperty (name) : Property {
+    protected getProperty(name) : Property {
         let property = this.findProperty(name);
         if (!property)
             throw 'unknown property ' + name;
@@ -176,14 +175,14 @@ export class UIComponent implements DragSource {
         return property;
     }
 
-    protected setValue (object, property, value) : void {
+    protected setValue(object, property, value) : void {
         if (typeof property === 'string')
             property = this.getProperty(property);
 
         object[property.name] = value;
     }
 
-    protected getValue (object, property) : any {
+    protected getValue(object, property) : any {
         if (typeof property === 'string')
             property = this.getProperty(property);
 
@@ -198,7 +197,7 @@ export class UIComponent implements DragSource {
         return property.renderFunction ? property.renderFunction(object, value) : value;
     }
 
-    setup(componentRegistry: ComponentRegistry) : void {
+    setup(componentRegistry : ComponentRegistry) : void {
         this.componentRegistry = componentRegistry;
 
         if (!this.ready) {
@@ -216,7 +215,7 @@ export class UIComponent implements DragSource {
         } // if
     }
 
-    decorate(model: any, nativeElement: any) {
+    decorate(model : any, nativeElement : any) {
         if (this._decorator)
             this._decorator(model, nativeElement);
     }
@@ -226,7 +225,7 @@ export class UIComponent implements DragSource {
 export class ComponentRegistry {
     // instance data
 
-    public components : Map<string,UIComponent>  = new Map<string,UIComponent>();
+    public components : Map<string,UIComponent> = new Map<string,UIComponent>();
 
     // constructor
 
@@ -255,9 +254,9 @@ export class ComponentRegistry {
     // private
 
     private setup() : void {
-      this.components.forEach((value, key) => {
-        value.setup(this);
-      });
+        this.components.forEach((value, key) => {
+            value.setup(this);
+        });
     }
 }
 
@@ -265,11 +264,11 @@ export class ComponentRegistry {
 export class ComponentFactoryBuilder {
     // instance data
 
-    private factories : Map<string, ComponentFactory<any>> = new  Map<string, ComponentFactory<any>>();
+    private factories : Map<string, ComponentFactory<any>> = new Map<string, ComponentFactory<any>>();
 
     // constructor
 
-    constructor(private compiler: Compiler) {
+    constructor(private compiler : Compiler) {
         //Tracer.setTraceLevel('editor.render', TraceLevel.FULL);
     }
 
@@ -298,7 +297,7 @@ export class ComponentFactoryBuilder {
 
             let module = this.compiler.compileModuleAndAllComponentsSync(TemplateModule);
 
-            factory =  module.componentFactories.find((comp) =>
+            factory = module.componentFactories.find((comp) =>
                 comp.componentType === TemplateComponent
             );
 
@@ -328,7 +327,7 @@ export class TemplateComponent extends UIComponent {
     // public
 
     public template(template : string) : TemplateComponent {
-        this._editTemplate   = template;
+        this._editTemplate = template;
         this._renderTemplate = template;
 
         return this;
@@ -341,14 +340,14 @@ export class TemplateComponent extends UIComponent {
     }
 
     public editTemplate(template : string) : TemplateComponent {
-        this._editTemplate   = template;
+        this._editTemplate = template;
 
         return this;
     }
 
     // override
 
-    setup(componentRegistry: ComponentRegistry) : void {
+    setup(componentRegistry : ComponentRegistry) : void {
         super.setup(componentRegistry);
 
         this.editConstituents = this.mergeConstituents(this.parse(this._editTemplate, true /* edit */));
@@ -359,7 +358,7 @@ export class TemplateComponent extends UIComponent {
 
     private scan(template, callbacks) {
         let binding;
-// local functions
+        // local functions
 
         function mode(ch) {
             if (ch === 'e' || ch === 'E')
@@ -522,7 +521,7 @@ export class TemplateComponent extends UIComponent {
                         if (editMode === true)
                             result.push(this.replaceKey(attribute, editMode));
                         else { // #children...
-                            result.push(  (element) => {
+                            result.push((element) => {
                                 let result = '';
                                 if (element.children)
                                     for (let child of element.children) {
@@ -552,7 +551,7 @@ export class TemplateComponent extends UIComponent {
                             );
                         }
                         else {
-                            result.push((element) =>  {
+                            result.push((element) => {
                                     let value = this.renderProperty(element, property);
 
                                     if (value !== undefined && value !== '' && value !== null)
@@ -580,7 +579,7 @@ export class TemplateComponent extends UIComponent {
                                 let bindingOrValue = this.getValue(element, property);
 
                                 if (bindingOrValue.type == 'value') // renderProperty
-                                    return attribute + '="' + (property.renderFunction ? property.renderFunction(undefined, bindingOrValue.value) : bindingOrValue.value) +'"'; // ugly
+                                    return attribute + '="' + (property.renderFunction ? property.renderFunction(undefined, bindingOrValue.value) : bindingOrValue.value) + '"'; // ugly
                                 else {
                                     // Do not render bindings in editMode
 

@@ -1,7 +1,4 @@
-import {
-    Component, Input, OnInit, Output, EventEmitter, ContentChild, TemplateRef,
-    ViewContainerRef, Directive, ElementRef
-} from "@angular/core";
+import {Component, Input, OnInit, Output, EventEmitter, TemplateRef, Directive, ElementRef} from "@angular/core";
 
 
 @Component({ //[ngTransclude]="tab.header"
@@ -27,7 +24,7 @@ export class Tabs {
 
     // data
 
-    private tabs: Tab[] = [];
+    private tabs : Tab[] = [];
 
     // private
 
@@ -83,7 +80,7 @@ export class Tabs {
 
     // called by the child
 
-    addTab(tab: Tab) {
+    addTab(tab : Tab) {
         if (this.tabs.length === 0)
             tab.active = true;
 
@@ -113,7 +110,7 @@ export class Tab implements OnInit {
     active : boolean = false;
     visible : boolean = true;
 
-    header: TemplateRef<any>;
+    header : TemplateRef<any>;
 
     // constructor
 
@@ -141,7 +138,7 @@ export class TabHeader {
     // constructor
 
 
-    constructor(tab : Tab, header: TemplateRef<any>) {
-       tab.header = header;
+    constructor(tab : Tab, header : TemplateRef<any>) {
+        tab.header = header;
     }
 }

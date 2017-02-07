@@ -98,7 +98,7 @@ export class AbstractTypeDescriptor implements TypeDescriptor {
     // methods
 
     public validate(o : any) : boolean {
-        return typeof o === this.type && (!this.constraint || this.constraint.eval(o));
+        return typeof o === this.type && (!this.constraint || this.constraint.eval(o));
     }
 
     public baseType() : string {
@@ -114,7 +114,7 @@ export class AbstractEnumTypeDescriptor extends AbstractTypeDescriptor {
     // constructor
 
     constructor(...values : any[]) {
-        super(typeof values[0], new Or(values.map((value)=>new Equals(value))));
+        super(typeof values[0], new Or(values.map((value) => new Equals(value))));
 
         this.values = values;
     }
@@ -254,7 +254,7 @@ export class NumberTypeDesriptor extends AbstractTypeDescriptor {
 export class ConstraintService {
     // instance data
 
-    private registry: any;
+    private registry : any;
 
     // constructor
 
@@ -315,7 +315,7 @@ export class ConstraintService {
         this.registry[operator] = factory;
     }
 
-    private createConstraint (operator, value) : Constraint {
+    private createConstraint(operator, value) : Constraint {
         return this.registry[operator].apply(null, [value]);
     }
 

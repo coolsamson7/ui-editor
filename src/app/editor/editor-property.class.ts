@@ -10,7 +10,7 @@ export class Property {
     isArtificial = false;
     _composite : string[];
     default : any | Function;
-    renderFunction: (model : any, value : any) => string;
+    renderFunction : (model : any, value : any) => string;
     _tooltip : string;
     _editor : any;
 
@@ -80,7 +80,7 @@ export class Property {
         return copy;
     }
 
-    deepCompare (v1 : any, v2 : any, path : string, diffs : any[]) : boolean {
+    deepCompare(v1 : any, v2 : any, path : string, diffs : any[]) : boolean {
         let leftChain = [];
         let rightChain = [];
 
@@ -98,8 +98,8 @@ export class Property {
         }
 
         function properties(o1 : any, o2 : any) : string[][] {
-            let left  : string[] = [];
-            let comm  : string[] = [];
+            let left : string[] = [];
+            let comm : string[] = [];
             let right : string[] = [];
 
             for (let key of Object.keys(o1))
@@ -115,7 +115,7 @@ export class Property {
             return [left, comm, right];
         }
 
-        function compare2Objects (x, y, path : string) {
+        function compare2Objects(x, y, path : string) {
             // remember that NaN === NaN returns false
             // and isNaN(undefined) returns true
 
@@ -170,7 +170,7 @@ export class Property {
                 leftChain.push(x);
                 rightChain.push(y);
 
-                compare2Objects (x[key], y[key], path + "." + key);
+                compare2Objects(x[key], y[key], path + "." + key);
 
                 leftChain.pop();
                 rightChain.pop();
@@ -186,7 +186,7 @@ export class Property {
 
     // return true if the values are equal!
 
-    public compare(v1 : any , v2 : any, path : string, diffs : any[]) : boolean {
+    public compare(v1 : any, v2 : any, path : string, diffs : any[]) : boolean {
         let defaultValue = this.createDefault();
 
         if (this.allowBinding) {
@@ -218,16 +218,16 @@ export class Property {
     }
 
     /*public renderObject() {
-        var value = object[property.name];
-        if (!value)
-            value = property.default;
+     var value = object[property.name];
+     if (!value)
+     value = property.default;
 
-        return property.renderFunction ? property.renderFunction(object, value) : value;
-    }*/
+     return property.renderFunction ? property.renderFunction(object, value) : value;
+     }*/
 
     // fluent
 
-    tooltip(tooltip : string) : Property{
+    tooltip(tooltip : string) : Property {
         this._tooltip = tooltip;
 
         return this;
@@ -263,7 +263,7 @@ export class Property {
         return this;
     }
 
-    public setType(type : string | TypeDescriptor ) : Property {
+    public setType(type : string | TypeDescriptor) : Property {
         this.type = type;
 
         return this;
@@ -284,7 +284,7 @@ export class Property {
     createDefault() {
         let value;
 
-        if (this.default !== undefined ) {
+        if (this.default !== undefined) {
             if (typeof this.default == "function")
                 value = this.default();
             else
@@ -299,11 +299,11 @@ export class Property {
                 type = (<AbstractTypeDescriptor>type).baseType();
 
             if (type == "string")
-                value =  "";
+                value = "";
             else if (type == "number")
                 value = 0;
         }
 
-        return this.allowBinding ? { type: "value", value: value}: value;
+        return this.allowBinding ? {type: "value", value: value} : value;
     }
 }

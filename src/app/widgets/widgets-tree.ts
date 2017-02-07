@@ -1,23 +1,23 @@
 import {
-  Component,
-  AfterViewInit,
-  SkipSelf,
-  Optional,
-  forwardRef,
-  Inject,
-  Input,
-  Injectable,
-  ComponentFactory,
-  Compiler,
-  NgModule,
-  ViewContainerRef,
-  ViewChild,
-  ComponentRef,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy, ElementRef, OnInit
+    Component,
+    SkipSelf,
+    Optional,
+    forwardRef,
+    Inject,
+    Input,
+    Injectable,
+    ComponentFactory,
+    Compiler,
+    NgModule,
+    ViewContainerRef,
+    ViewChild,
+    ComponentRef,
+    OnChanges,
+    SimpleChanges,
+    OnDestroy,
+    ElementRef,
+    OnInit
 } from "@angular/core";
-
 import {DragSource, DropTarget} from "../ui/ui-dd.class";
 import {Shortcut} from "../ui/ui-shortcut";
 import {AppModule} from "../app.module";
@@ -30,7 +30,7 @@ export class TreeComponentBuilder {
 
     // constructor
 
-    constructor(private compiler: Compiler) {
+    constructor(private compiler : Compiler) {
     }
 
     private buildFactory(template : string) : ComponentFactory<any> {
@@ -84,22 +84,22 @@ export class NodeContent implements OnChanges {
     private node;
     private componentRef : ComponentRef<any>;
     @ViewChild('container', {read: ViewContainerRef})
-    private container: ViewContainerRef;
+    private container : ViewContainerRef;
 
     // constructor
 
-    constructor(private treeComponentBuilder: TreeComponentBuilder) {
+    constructor(private treeComponentBuilder : TreeComponentBuilder) {
     }
 
     // private
 
     template() {
-        return this.node.tree.model.label || '';
+        return this.node.tree.model.label || '';
     }
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         // changes.prop contains the old and the new value...
 
         this.render();
@@ -120,7 +120,7 @@ export class NodeContent implements OnChanges {
 
         instance.__proto__ = this.node.tree.model.context; // :-) // constructor.prototype!
 
-        instance.node  = this.node;
+        instance.node = this.node;
         instance.model = this.node.model;
     }
 }
@@ -153,23 +153,6 @@ export class NodeContent implements OnChanges {
 `
 })
 export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
-    // implement DragSource
-
-    create(): any {
-        return this.model;
-    }
-
-    // implement DropTarget
-
-    dropAllowed(object) : boolean {
-        return this.tree.model.dropAllowed ?  this.tree.model.dropAllowed(object, this.model) : true;
-    }
-
-    dropped(object : any) : any {
-        if (this.tree.model.dropped)
-            this.tree.model.dropped(object, this.model);
-    }
-
     // instance data
 
     tree : TreeComponent;
@@ -184,7 +167,7 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
 
     // constructor
 
-    constructor(@Inject(forwardRef(() => TreeComponent)) tree,  @SkipSelf() @Optional() parent : TreeNode) {
+    constructor(@Inject(forwardRef(() => TreeComponent)) tree, @SkipSelf() @Optional() parent : TreeNode) {
         this.tree = tree;
         this.parent = parent;
         //this.children = [];
@@ -239,7 +222,7 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
     prevChild(child : TreeNode) : TreeNode {
         let index = this.children.indexOf(child);
         if (index > 0) {
-            let previous =  this.children[index - 1];
+            let previous = this.children[index - 1];
 
             if (previous.isExpanded && previous.children.length > 0)
                 return previous.children[previous.children.length - 1];
@@ -257,7 +240,7 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
     }
 
     hasChildren() : boolean {
-        return  this.model.children && this.model.children.length;
+        return this.model.children && this.model.children.length;
     }
 
     // keys
@@ -324,7 +307,7 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         // changes.prop contains the old and the new value...
 
         if (this.tree.currentSelection && this.tree.currentSelection.model === this.model) {
@@ -332,6 +315,23 @@ export class TreeNode implements DragSource, DropTarget, OnChanges, OnDestroy {
 
             this.tree.currentSelection = this;
         }
+    }
+
+    // implement DragSource
+
+    create() : any {
+        return this.model;
+    }
+
+    // implement DropTarget
+
+    dropAllowed(object) : boolean {
+        return this.tree.model.dropAllowed ? this.tree.model.dropAllowed(object, this.model) : true;
+    }
+
+    dropped(object : any) : any {
+        if (this.tree.model.dropped)
+            this.tree.model.dropped(object, this.model);
     }
 }
 
@@ -356,7 +356,7 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
     public model : any;
 
     @ViewChild("ul")
-    private ul: ElementRef;
+    private ul : ElementRef;
 
 
     children : TreeNode[] = [];
@@ -375,7 +375,9 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
 
         this.onDelete.push(shortcuts.register({
             shortCut: 'left',
-            handles: (event) => {return this.hasFocus && this.currentSelection},
+            handles: (event) => {
+                return this.hasFocus && this.currentSelection
+            },
             action: () => {
                 this.currentSelection.onLeft(event);
             },
@@ -383,7 +385,9 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
 
         this.onDelete.push(shortcuts.register({
             shortCut: 'right',
-            handles: (event) => {return this.hasFocus && this.currentSelection},
+            handles: (event) => {
+                return this.hasFocus && this.currentSelection
+            },
             action: () => {
                 this.currentSelection.onRight(event);
             },
@@ -391,7 +395,9 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
 
         this.onDelete.push(shortcuts.register({
             shortCut: 'up',
-            handles: (event) => {return this.hasFocus && this.currentSelection},
+            handles: (event) => {
+                return this.hasFocus && this.currentSelection;
+            },
             action: () => {
                 this.currentSelection.onUp(event);
             },
@@ -399,7 +405,9 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
 
         this.onDelete.push(shortcuts.register({
             shortCut: 'down',
-            handles: (event) => {return this.hasFocus && this.currentSelection},
+            handles: (event) => {
+                return this.hasFocus && this.currentSelection;
+            },
             action: () => {
                 this.currentSelection.onDown(event);
             },
@@ -426,20 +434,20 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         // changes.prop contains the old and the new value...
     }
 
     // OnDestroy
 
-    ngOnDestroy(): void {
+    ngOnDestroy() : void {
         for (let onDelete of this.onDelete)
             onDelete();
     }
 
     // OnInit
 
-    ngOnInit(): void {
+    ngOnInit() : void {
         this.model.tree = this;
 
         this.model.onSelect.subscribe((component) => {
@@ -507,7 +515,7 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
             if (node.children && node.children.length > 0) {
                 state.children = [];
 
-                for ( let child of node.children) {
+                for (let child of node.children) {
                     let childState = {};
 
                     state.children.push(childState);
@@ -538,11 +546,13 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
         function restore(node : TreeNode, state : any) {
             node.isSelected = state.isSelected; // currentSelection?
 
-            let wasExpanded = node.isExpanded;
+            const wasExpanded = node.isExpanded;
             node.isExpanded = state.isExpanded;
 
             if (!wasExpanded) {
-                setTimeout(() => {restore(node, state)}); // tree needs to get constructed first :-)
+                setTimeout(() => {
+                    restore(node, state);
+                }); // tree needs to get constructed first :-)
             }
             else {
                 if (state.children && state.children.length > 0) {
@@ -573,7 +583,7 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
         this.currentSelection = treeNode;
     }
 
-    public expandPath(path: any[]) {
+    public expandPath(path : any[]) {
         let self = this;
 
         function expand(node : TreeNode, path : any[], index : number) {
@@ -581,7 +591,9 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
                 if (!node.isExpanded) {
                     node.isExpanded = true;
 
-                    setTimeout(() => {expand(node, path, index)}, 0);
+                    setTimeout(() => {
+                        expand(node, path, index)
+                    }, 0);
                 }
                 else {
                     for (let child of node.children)
@@ -606,8 +618,8 @@ export class TreeComponent implements OnChanges, OnInit, OnDestroy {
 
     onSelect(node : TreeNode) { //this.ul.nativeElement.focus();
         if (this.currentSelection !== node) {
-           if (this.currentSelection)
-               this.currentSelection.isSelected = false;
+            if (this.currentSelection)
+                this.currentSelection.isSelected = false;
 
             if (node) {
                 node.isSelected = true;

@@ -8,7 +8,12 @@ import {
     Injectable,
     ComponentFactoryResolver,
     ApplicationRef,
-    ComponentRef, trigger, state, style, transition, animate
+    ComponentRef,
+    trigger,
+    state,
+    style,
+    transition,
+    animate
 } from "@angular/core";
 
 
@@ -110,7 +115,7 @@ export class Toast {
 
     // callback
 
-    close($event: any) {
+    close($event : any) {
         $event.preventDefault();
 
         this.closed.next(this.toast);
@@ -122,7 +127,8 @@ export class Toast {
     template: `
 <div class="toasts position-bottom-right">
     <toast *ngFor="let toast of toasts" [toast]="toast" (closed)="closed($event)"></toast>
-</div>`})
+</div>`
+})
 export class ToastContainer {
     // instance data
 
@@ -165,13 +171,13 @@ export class ToastContainer {
 export class ToastService {
     // data
 
-    private containerComponent: ComponentRef<any>;
+    private containerComponent : ComponentRef<any>;
     private container : ToastContainer;
-    private rootViewContainerRef: ViewContainerRef;
+    private rootViewContainerRef : ViewContainerRef;
 
     // constructor
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver, private applicationRef: ApplicationRef) {
+    constructor(private componentFactoryResolver : ComponentFactoryResolver, private applicationRef : ApplicationRef) {
     }
 
     // private
@@ -230,7 +236,7 @@ export class ToastService {
 export class SetToastContainer {
     // constructor
 
-    constructor(container: ViewContainerRef, toastService : ToastService) {
+    constructor(container : ViewContainerRef, toastService : ToastService) {
         toastService.setContainer(container);
     }
 }

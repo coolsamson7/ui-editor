@@ -27,18 +27,18 @@ export class Shortcut {
         '\\': 220,
         ']': 221,
         "'": 222,
-        'f1':112,
-        'f2':113,
-        'f3':114,
-        'f4':115,
-        'f5':116,
-        'f6':117,
-        'f7':118,
-        'f8':119,
-        'f9':120,
-        'f10':121,
-        'f11':122,
-        'f12':123
+        'f1': 112,
+        'f2': 113,
+        'f3': 114,
+        'f4': 115,
+        'f5': 116,
+        'f6': 117,
+        'f7': 118,
+        'f8': 119,
+        'f9': 120,
+        'f10': 121,
+        'f11': 122,
+        'f12': 123
     };
     private keyCodeChars = {};
     private modifierKeys = {
@@ -56,9 +56,9 @@ export class Shortcut {
                 arr.splice(i, 1);
     }
 
-    private parseKeySet (shortCut) {
+    private parseKeySet(shortCut) {
         let names = shortCut.split('+');
-        let keys: any = {};
+        let keys : any = {};
 
         // Default modifiers to unset.
 
@@ -129,7 +129,9 @@ export class Shortcut {
 
             this.shortcuts[this.shortcuts.length - 1].push(shortcut);
 
-            return () => {this.unregister(shortcut);};
+            return () => {
+                this.unregister(shortcut);
+            };
         }
     }
 
@@ -137,11 +139,11 @@ export class Shortcut {
         this.overwriteWithout(this.shortcuts[this.shortcuts.length - 1], shortcut);
     }
 
-    public addLayer () {
+    public addLayer() {
         this.shortcuts.push([]);
     }
 
-    public removeLayer () {
+    public removeLayer() {
         this.shortcuts.splice(this.shortcuts.length - 1, 1);
     }
 
@@ -171,7 +173,7 @@ export class Shortcut {
         const eventKeys = this.parseEvent(e);
 
         if (e.target.tagName == "INPUT" || e.target.tagName == "TEXTAREA")
-           return;  // Don't catch keys that were in inputs. Hmmm....
+            return;  // Don't catch keys that were in inputs. Hmmm....
 
         //console.log(eventKeys);
 
@@ -203,7 +205,7 @@ export class Shortcut {
 
     // private
 
-    private handles(shortcut: any, event: any) : boolean {
+    private handles(shortcut : any, event : any) : boolean {
         return shortcut.handles ? shortcut.handles(event) : true;
     }
 }

@@ -16,7 +16,7 @@ class SizePolicy {
     // instance data
 
     private stretch : boolean;
-    private initial : string ;
+    private initial : string;
 
     // constructor
 
@@ -49,9 +49,9 @@ interface Splittable {
 
     show(show : boolean) : void;
 
-    moveBy(deltaX: number, deltaY: number) : void;
+    moveBy(deltaX : number, deltaY : number) : void;
 
-    grow(number: number) : number;
+    grow(number : number) : number;
 
     size(x : number, y : number) : void;
 
@@ -115,7 +115,7 @@ export class SplitPane implements OnInit {
 
 
     private layout(nativeWidth : number) {
-        let splitterWidth = this.splittables.length > 1 ? this.splittables[0].splitterWidth(): 0;
+        let splitterWidth = this.splittables.length > 1 ? this.splittables[0].splitterWidth() : 0;
         let distributeWidth = nativeWidth - (this.splittables.length - 1) * splitterWidth;
 
         if (this.width == 0) {
@@ -164,7 +164,7 @@ export class SplitPane implements OnInit {
         for (let i = 0; i < this.splittables.length; i++) {
             let splittable = this.splittables[i];
             let splitterWidth = splittable.getNativeElement().getBoundingClientRect().width;
-            width +=  splitterWidth + ((i < len - 1) ? splittable.splitterWidth() : 0);
+            width += splitterWidth + ((i < len - 1) ? splittable.splitterWidth() : 0);
 
             if (!lastNonEmpty && splittable.getNativeElement().getBoundingClientRect().width > 0)
                 lastNonEmpty = splittable;
@@ -181,8 +181,8 @@ export class SplitPane implements OnInit {
     }
 
     removeHostElement(elementRef : ElementRef) {
-        let nativeElement: HTMLElement = elementRef.nativeElement;
-        let parentElement: HTMLElement = nativeElement.parentElement;
+        let nativeElement : HTMLElement = elementRef.nativeElement;
+        let parentElement : HTMLElement = nativeElement.parentElement;
 
         this.nativeElement = <HTMLElement>nativeElement.firstChild;
 
@@ -196,20 +196,20 @@ export class SplitPane implements OnInit {
         parentElement.removeChild(nativeElement);
     }
 
-    add(splittable : Splittable) : number{
+    add(splittable : Splittable) : number {
         if (this.splittables.length > 0)
-            this.splittables[this.splittables.length-1].show(true);
+            this.splittables[this.splittables.length - 1].show(true);
 
         this.splittables.push(splittable);
 
         return this.splittables.length - 1;
     }
 
-    before(splittable: Splittable) : Splittable {
+    before(splittable : Splittable) : Splittable {
         return this.splittables[splittable.index() - 1];
     }
 
-    after(splittable: Splittable) : Splittable {
+    after(splittable : Splittable) : Splittable {
         return this.splittables[splittable.index() + 1];
     }
 
@@ -217,10 +217,10 @@ export class SplitPane implements OnInit {
         return this.splittables[index];
     }
 
-    movePanelBy(splittable: Splittable, deltaX: number, deltaY: number) {
+    movePanelBy(splittable : Splittable, deltaX : number, deltaY : number) {
         let index = this.splittables.indexOf(splittable);
 
-        if (deltaX > 0){
+        if (deltaX > 0) {
             // shrink splittable after
             deltaX = this.after(splittable).grow(-deltaX);
             // grow own
@@ -228,7 +228,7 @@ export class SplitPane implements OnInit {
         }
         else {
             // shrink
-            deltaX =  splittable.grow(deltaX);
+            deltaX = splittable.grow(deltaX);
             this.after(splittable).grow(-deltaX);
         }
 
@@ -311,7 +311,7 @@ export class SplitPanel implements Splittable, OnInit, AfterViewInit {
     @ViewChild(Splitter)
     splitter : Splitter;
 
-    private nativeElement: HTMLElement;
+    private nativeElement : HTMLElement;
     private _index : number;
 
     @Input()
@@ -328,8 +328,8 @@ export class SplitPanel implements Splittable, OnInit, AfterViewInit {
     // private
 
     removeHostElement(elementRef : ElementRef) {
-        let nativeElement: HTMLElement = this.elementRef.nativeElement;
-        let parentElement: HTMLElement = nativeElement.parentElement;
+        let nativeElement : HTMLElement = this.elementRef.nativeElement;
+        let parentElement : HTMLElement = nativeElement.parentElement;
 
         this.nativeElement = <HTMLElement>nativeElement.firstChild;
 
@@ -359,16 +359,17 @@ export class SplitPanel implements Splittable, OnInit, AfterViewInit {
 
     // implement Splittable
 
-    moveBy(deltaX: number, deltaY: number) : void{
+    moveBy(deltaX : number, deltaY : number) : void {
         this.pane.movePanelBy(this, deltaX, deltaY);
     }
 
-    grow(number: number): number {
+    grow(number : number) : number {
         let width = Math.round(this.nativeElement.getBoundingClientRect().width);
         let newWidth = width + number;
 
         if (newWidth < 0) {
-            number -= newWidth; number = Math.round(number);
+            number -= newWidth;
+            number = Math.round(number);
             newWidth = 0;
         }
 
@@ -378,7 +379,7 @@ export class SplitPanel implements Splittable, OnInit, AfterViewInit {
     }
 
     size(x : number, y : number) : void {
-        this.nativeElement.style.width  = x.toString() + "px";
+        this.nativeElement.style.width = x.toString() + "px";
         //this.nativeElement.style.height = y.toString() + "px";
 
         //if (this.splitter)
@@ -394,7 +395,7 @@ export class SplitPanel implements Splittable, OnInit, AfterViewInit {
     }
 
     splitterWidth() : number {
-        return this.splitter ? this.splitter.width(): 0;
+        return this.splitter ? this.splitter.width() : 0;
     }
 
     getNativeElement() : HTMLElement {

@@ -70,7 +70,7 @@ export class Tracer {
         Tracer.instance.modifications++;
     }
 
-    public static trace (path : string, level: TraceLevel, message : string) {
+    public static trace(path : string, level : TraceLevel, message : string) {
         if (Tracer.instance.getTraceLevel(path) >= level) {
             // format
 

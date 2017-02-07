@@ -9,10 +9,10 @@ import {Property} from "./editor-property.class";
 export class EditorObjects {
     // public
 
-    public setup(componentRegistry: ComponentRegistry): void {
+    public setup(componentRegistry : ComponentRegistry) : void {
         // syntactic sugar
 
-        function property(name: string) {
+        function property(name : string) {
             return new Property(name);
         }
 
@@ -21,7 +21,7 @@ export class EditorObjects {
         }
 
         componentRegistry
-            // base
+        // base
 
             .register(new UIComponent("base")
                 .isAbstract()
@@ -44,7 +44,7 @@ export class EditorObjects {
                     .setDefault(() => {
                         return {};
                     })
-                    .render((object: any, value: any) => {
+                    .render((object : any, value : any) => {
                         let result = '';
 
                         for (let key in value)
@@ -71,7 +71,7 @@ export class EditorObjects {
 
                 .register(property("style")
                     .artificial(true)
-                    .render((object: any, value: any) => {
+                    .render((object : any, value : any) => {
                         let result = '';
 
                         if (object.font) {
@@ -125,10 +125,10 @@ export class EditorObjects {
             // body
 
             .register(template("body")
-                    .template("<div>$#children$</div>")
-                    .setLabel("Body")
-                    .setIcon("th")
-                    .group('Container')
+                .template("<div>$#children$</div>")
+                .setLabel("Body")
+                .setIcon("th")
+                .group('Container')
             )
 
             // label
@@ -391,7 +391,7 @@ export class EditorObjects {
                     .inGroup("Advanced")
                     .setDefault(() => "")
                     .binding(true)
-                    .composite("type", "value") )
+                    .composite("type", "value"))
                 .register(property("value"))
                 .register(property("model")
                     .tooltip("the angular binding")
@@ -419,7 +419,7 @@ export class EditorObjects {
                     .tooltip("the placeholder text")
                     .setDefault(() => "")
                     .binding(true)
-                    .composite("type", "value") )
+                    .composite("type", "value"))
 
                 .register(property("type")
                     .tooltip("the input type ( text or number )")
@@ -450,7 +450,7 @@ export class EditorObjects {
                 .register(property("placeholder")
                     .setDefault(() => "")
                     .binding(true)
-                    .composite("type", "value") )
+                    .composite("type", "value"))
 
                 .register(property("rows")
                     .setDefault(2))
@@ -520,7 +520,7 @@ export class EditorObjects {
                 .group('Layout')
                 .orientation('ver')
                 .validParents('body', 'col', 'fieldset', 'div', 'form')
-                .decorator((model: any, row: any) => {
+                .decorator((model : any, row : any) => {
                     // count rows
 
                     let count = 0;
@@ -564,7 +564,7 @@ export class EditorObjects {
                 .validParents('row')
                 .register(property("columns").setType("number").setDefault(2))
                 .register(property("offset").setType("number").setDefault(0))
-                .decorator((model: any, col: any) => {
+                .decorator((model : any, col : any) => {
                     // hierarchy is <el> -> ng-comp -> <div drag... > -> <edit-compoennt>
 
                     let div = col.parentElement;

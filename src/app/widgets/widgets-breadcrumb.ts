@@ -1,7 +1,4 @@
-import {
-    Component, Input, OnInit, Output, EventEmitter, ContentChild, TemplateRef,
-    ViewContainerRef, Directive, ElementRef, ChangeDetectionStrategy
-} from "@angular/core";
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from "@angular/core";
 
 
 @Component({

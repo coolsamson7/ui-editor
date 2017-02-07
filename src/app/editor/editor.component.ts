@@ -15,11 +15,11 @@ export class Editable {
 
     selected : boolean = false;
     parent : Editable;
-    children: Editable[] = [];
+    children : Editable[] = [];
 
     // constructor
 
-    constructor(model : any, parent: Editable) {
+    constructor(model : any, parent : Editable) {
         this.model = model;
         this.parent = parent;
         if (this.parent)
@@ -41,9 +41,14 @@ export class Editable {
         this.children.splice(this.children.indexOf(child), 1);
     }
 
-    onLeft(event) {}
-    onRight(event) {}
-    onDelete(event) {}
+    onLeft(event) {
+    }
+
+    onRight(event) {
+    }
+
+    onDelete(event) {
+    }
 }
 
 
@@ -62,10 +67,11 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
     // data
 
     @Input('root')
-    public set root(root: any) {
+    public set root(root : any) {
         this.model = root;
     }
-    @Input('context') context: any;
+
+    @Input('context') context : any;
     @Input('onSelection') onSelection;
 
     @Input()
@@ -88,7 +94,9 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
         this.onDestroy.push(shortcut.register({
             shortCut: 'left',
-            handles: (event) => {return this.hasFocus && this.selection},
+            handles: (event) => {
+                return this.hasFocus && this.selection
+            },
             action: () => {
                 this.selection.onLeft(event)
             },
@@ -96,7 +104,9 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
         this.onDestroy.push(shortcut.register({
             shortCut: 'right',
-            handles: (event) => {return this.hasFocus && this.selection},
+            handles: (event) => {
+                return this.hasFocus && this.selection
+            },
             action: () => {
                 this.selection.onRight(event)
             },
@@ -104,7 +114,9 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
         this.onDestroy.push(shortcut.register({
             shortCut: 'up',
-            handles: (event) => {return this.hasFocus && this.selection},
+            handles: (event) => {
+                return this.hasFocus && this.selection
+            },
             action: () => {
                 this.selection.onLeft(event)
             },
@@ -112,7 +124,9 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
         this.onDestroy.push(shortcut.register({
             shortCut: 'down',
-            handles: (event) => {return this.hasFocus && this.selection},
+            handles: (event) => {
+                return this.hasFocus && this.selection
+            },
             action: () => {
                 this.selection.onRight(event)
             },
@@ -120,7 +134,9 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
         this.onDestroy.push(shortcut.register({
             shortCut: 'delete',
-            handles: (event) => {return this.hasFocus && this.selection},
+            handles: (event) => {
+                return this.hasFocus && this.selection
+            },
             action: () => {
                 this.selection.onDelete(event)
             },
@@ -128,7 +144,9 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
         this.onDestroy.push(shortcut.register({
             shortCut: 'meta+key:90',
-            handles: (event) => {return true;},
+            handles: (event) => {
+                return true;
+            },
             action: () => {
                 this.history.undo();
             },
@@ -166,7 +184,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
     // private
 
-    public findComponent(model: any) : Editable {
+    public findComponent(model : any) : Editable {
         let stack : Editable[] = [];
         for (let child of this.children)
             stack.push(child);
@@ -195,7 +213,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
     // public
 
-    public select(component: any) {
+    public select(component : any) {
         if (this.selection)
             this.selection.selected = false;
 
@@ -217,7 +235,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
     // called by the individual component
 
-    reparent(component: any, model: any) {
+    reparent(component : any, model : any) {
         if (component.$parent)
             this.history.reparent(component, model);
         else
@@ -230,7 +248,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
         this.onSelect(undefined);
     }
 
-    moveLeft(editComponent: EditComponent) {
+    moveLeft(editComponent : EditComponent) {
         if (editComponent.parent) {
             let index = editComponent.parent.model.children.indexOf(editComponent.model);
             if (index > 0)
@@ -238,7 +256,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
         }
     }
 
-    moveRight(editComponent: EditComponent) {
+    moveRight(editComponent : EditComponent) {
         if (editComponent.parent) {
             let index = editComponent.parent.model.children.indexOf(editComponent.model);
             if (index < editComponent.parent.model.children.length - 1)
@@ -268,7 +286,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
     // AfterViewInit
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() : void {
         // react to selection changes
 
         this.onSelection.subscribe((component) => {
@@ -278,7 +296,7 @@ export class EditorComponent extends Editable implements OnDestroy, AfterViewIni
 
     // OnDestroy
 
-    ngOnDestroy(): void {
+    ngOnDestroy() : void {
         for (let onDelete of this.onDestroy)
             onDelete();
     }

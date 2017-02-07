@@ -17,7 +17,6 @@ import {
 } from "@angular/core";
 import {TypeDescriptor, AbstractTypeDescriptor, AbstractEnumTypeDescriptor} from "../util/util-types";
 import {HashMap} from "../util/util-map";
-
 import {Property} from "./editor-property.class";
 import {UIComponent, ComponentRegistry} from "./editor-component.class";
 import {AppModule} from "../app.module";
@@ -56,7 +55,7 @@ export class PropertyEditorBuilder {
 
     // constructor
 
-    constructor(private compiler: Compiler) {
+    constructor(private compiler : Compiler) {
         this.registry = new HashMap<EditorKey,string>(
             key => key.hashCode(), // for now...
             (v1, v2) => v1.equals(v2) // equals
@@ -124,7 +123,7 @@ export class PropertyEditorBuilder {
             new EditorKey(undefined, <AbstractTypeDescriptor>type) :
             new EditorKey(<string>type, undefined);
 
-        let template =  this.registry.get(key);
+        let template = this.registry.get(key);
 
         if (!template && type instanceof AbstractEnumTypeDescriptor) {
             this.registry.put(key, template = '<enum-property [type]="type" [model]="model" [property]="\'{0}\'">'); // cache
@@ -156,7 +155,7 @@ export class BooleanPropertyComponent {
     // instance data
 
     @Input()
-    private model: any;
+    private model : any;
     @Input()
     private property : string;
     private values = [true, false];
@@ -177,7 +176,7 @@ export class BooleanPropertyComponent {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (this.model[this.property] == undefined)
             this.model[this.property] = this.values[0];
 
@@ -197,7 +196,7 @@ export class EnumPropertyComponent {
     // instance data
 
     @Input()
-    private model: any;
+    private model : any;
     @Input()
     private property : string;
     @Input("type")
@@ -214,7 +213,7 @@ export class EnumPropertyComponent {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         this.values = this.type.getValues();
 
         if (this.model[this.property] == undefined)
@@ -260,7 +259,7 @@ export class AttributeEditorComponent implements OnChanges, OnDestroy {
     // instance data
 
     @Input()
-    private model: any;
+    private model : any;
     private newAttributeName;
     private attributes : string[];
     @Output() onChange : EventEmitter<any> = new EventEmitter();
@@ -304,13 +303,13 @@ export class AttributeEditorComponent implements OnChanges, OnDestroy {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         this.attributes = this.model.attributes ? Object.keys(this.model.attributes) : [];
     }
 
     // OnDestroy
 
-    ngOnDestroy(): void {
+    ngOnDestroy() : void {
         //if (this.attributes && Object.keys(this.attributes).length == 0)
         //    delete this.model.attributes;
     }
@@ -326,11 +325,11 @@ export class PropertyEditorComponent implements OnInit, OnChanges {
     // instance data
 
     @ViewChild('container', {read: ViewContainerRef})
-    private container: ViewContainerRef;
+    private container : ViewContainerRef;
     @Input()
-    private model: any;
+    private model : any;
     @Input()
-    private attribute: string;
+    private attribute : string;
     @Input()
     private property : Property;
     private componentRef : ComponentRef<any>;
@@ -373,13 +372,13 @@ export class PropertyEditorComponent implements OnInit, OnChanges {
 
     // OnInit
 
-    ngOnInit(): void {
+    ngOnInit() : void {
 
     }
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         // changes.prop contains the old and the new value...
 
         this.addComponent();
@@ -415,7 +414,7 @@ export class PropertyEditorComponent implements OnInit, OnChanges {
     </div>
 </div>`
 })
-export class ValueOrBindingEditor implements OnInit , OnChanges{
+export class ValueOrBindingEditor implements OnInit, OnChanges {
     // data
 
     @Input('model')
@@ -423,7 +422,7 @@ export class ValueOrBindingEditor implements OnInit , OnChanges{
     @Input()
     private property : Property;
 
-    private valueOrBinding: any;
+    private valueOrBinding : any;
 
     @Output() onChange : EventEmitter<any> = new EventEmitter();
 
@@ -455,7 +454,7 @@ export class ValueOrBindingEditor implements OnInit , OnChanges{
         let oldValue = this.valueOrBinding.value;
         let newValue;
 
-        if ( type == 'binding')
+        if (type == 'binding')
             newValue = '';
         else
             newValue = this.property.createDefault().value;
@@ -466,13 +465,13 @@ export class ValueOrBindingEditor implements OnInit , OnChanges{
 
     // OnInit
 
-    ngOnInit(): void {
+    ngOnInit() : void {
         this.valueOrBinding = this.model[this.property.name];
     }
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
     }
 }
 
@@ -551,7 +550,7 @@ export class ComponentEditorComponent implements OnChanges {
     // instance data
 
     @Input()
-    private model: any;
+    private model : any;
 
     private component : UIComponent;
     private groups : any[];
@@ -599,7 +598,7 @@ export class ComponentEditorComponent implements OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) : void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (this.model) {
             this.component = this.componentRegistry.find(this.model.id);
             this.groups = this.buildGroups(this.component.getProperties());

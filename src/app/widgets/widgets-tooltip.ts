@@ -50,23 +50,23 @@ import {Overlays, Overlay} from "./widgets-overlays";
 export class TooltipComponent extends Overlay implements AfterViewInit {
     // instance data
 
-    content: string;
+    content : string;
 
-    top: number = -100000;
-    left: number = -100000;
+    top : number = -100000;
+    left : number = -100000;
 
     // constructor
 
-    constructor(private element: ElementRef, private changeDetector: ChangeDetectorRef) {
+    constructor(private element : ElementRef, private changeDetector : ChangeDetectorRef) {
         super();
     }
 
     // AfterViewInit
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() : void {
         let position = this.calcPosition(this.element.nativeElement.children[0]);
 
-        this.top  = position.top;
+        this.top = position.top;
         this.left = position.left;
 
         this.changeDetector.detectChanges();
@@ -80,20 +80,20 @@ export class Tooltip {
     // instance data
 
     @Input()
-    private tooltip: any;
+    private tooltip : any;
 
-    private tooltipComponent: ComponentRef<TooltipComponent>;
+    private tooltipComponent : ComponentRef<TooltipComponent>;
 
-    private timer: any;
+    private timer : any;
 
     // constructor
 
-    constructor(private overlays : Overlays, private viewContainer: ViewContainerRef) {
+    constructor(private overlays : Overlays, private viewContainer : ViewContainerRef) {
     }
 
     // private
 
-    setTimer(callback: () => void) {
+    setTimer(callback : () => void) {
         this.timer = setTimeout(callback, 500);
     }
 
@@ -108,7 +108,7 @@ export class Tooltip {
 
     @HostListener("focusin")
     @HostListener("mouseenter")
-    show(): void {
+    show() : void {
         if (!this.tooltipComponent && this.tooltip) {
             this.setTimer(() => {
                 this.tooltipComponent = this.createTooltip(this.tooltip);
@@ -119,7 +119,7 @@ export class Tooltip {
 
     @HostListener("focusout")
     @HostListener("mouseleave")
-    hide(): void {
+    hide() : void {
         if (this.tooltipComponent) {
             this.tooltipComponent.destroy();
 
@@ -132,7 +132,7 @@ export class Tooltip {
 
     // private
 
-    private createTooltip(text: string): ComponentRef<TooltipComponent> {
+    private createTooltip(text : string) : ComponentRef<TooltipComponent> {
         return this.overlays.createOverlay(this.viewContainer.element.nativeElement, "top", TooltipComponent, {
             content: text
         });

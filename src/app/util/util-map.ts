@@ -1,11 +1,11 @@
 export class HashMap<K,V> {
     // class methods
 
-    public static objectHash (value : any) : number {
+    public static objectHash(value : any) : number {
         return 1; // TODO
     }
 
-    public static stringHash (value : string) : number {
+    public static stringHash(value : string) : number {
         var string = value.toString(), hash = 0, i;
         for (i = 0; i < string.length; i++) {
             hash = (((hash << 5) - hash) + string.charCodeAt(i));
@@ -27,13 +27,15 @@ export class HashMap<K,V> {
 
     // constructor
 
-    constructor(hash? :  (K) => number, equals? : (v1 : K, v2 : K) => boolean, capacity? : number, loadFactor? : number) {
-        this.capacity = capacity? capacity: 16; // power of 2
+    constructor(hash? : (K) => number, equals? : (v1 : K, v2 : K) => boolean, capacity? : number, loadFactor? : number) {
+        this.capacity = capacity ? capacity : 16; // power of 2
         this.loadFactor = loadFactor ? loadFactor : 0.75;
         this.equals = equals ? equals : function (a, b) {
             return a === b;
         };
-        this.hash = hash ? hash : function(value){return 1;};
+        this.hash = hash ? hash : function (value) {
+            return 1;
+        };
 
         // internal stuff
 
@@ -44,7 +46,7 @@ export class HashMap<K,V> {
 
     // public
 
-    put (key : K, value : V) {
+    put(key : K, value : V) {
         if (this.entries >= this.threshold) {
             // resize
 
@@ -93,12 +95,12 @@ export class HashMap<K,V> {
                 return;
             }
 
-        bucket.push({key: key, value: value });
+        bucket.push({key: key, value: value});
 
         this.entries++;
     }
 
-    get (key : K) : V {
+    get(key : K) : V {
         var hashCode = this.hash(key) % this.capacity;
         var bucket = this.buckets[hashCode];
 
@@ -112,7 +114,7 @@ export class HashMap<K,V> {
         return undefined;
     }
 
-    keys () : V[] {
+    keys() : V[] {
         var keys = [];
         for (var i = 0; i < this.capacity; i++)
             if (this.buckets[i]) {
@@ -125,7 +127,7 @@ export class HashMap<K,V> {
         return keys;
     }
 
-    values () : V[] {
+    values() : V[] {
         var values = [];
         for (var i = 0; i < this.capacity; i++)
             if (this.buckets[i]) {

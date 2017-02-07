@@ -27,11 +27,11 @@ export class EditorService {
 
         /* TEST
 
-        for (let diff of diffs) {
-            console.log("path: " + diff.path);
-            console.log(diff.v1);
-            console.log(diff.v2);
-        }*/
+         for (let diff of diffs) {
+         console.log("path: " + diff.path);
+         console.log(diff.v1);
+         console.log(diff.v2);
+         }*/
 
         // done
 

@@ -23,7 +23,7 @@ import {UIComponent, ComponentRegistry} from "./editor-component.class";
 </div>
 `
 })
-export class ComponentGroupComponent{
+export class ComponentGroupComponent {
     // data
 
     @Input()
@@ -81,22 +81,22 @@ export class PaletteComponent implements OnChanges {
         let map = {};
 
         components.forEach((component, key) => {
-          if (!component.abstract) {
-            let group = map[component._group];
+            if (!component.abstract) {
+                let group = map[component._group];
 
-            if (!group) {
-              group = {
-                name: component._group,
-                components: []
-              };
+                if (!group) {
+                    group = {
+                        name: component._group,
+                        components: []
+                    };
 
-              map[component._group] = group;
+                    map[component._group] = group;
 
-              result.push(group);
+                    result.push(group);
+                } // if
+
+                group.components.push(component); // what about sorting?
             } // if
-
-            group.components.push(component); // what about sorting?
-          } // if
         });
 
         return result;
@@ -104,6 +104,6 @@ export class PaletteComponent implements OnChanges {
 
     // implement OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
     }
 }

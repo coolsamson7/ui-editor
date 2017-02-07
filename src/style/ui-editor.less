@@ -25,7 +25,6 @@ div.float-tab {
   pointer-events: none;
 }
 
-
 .left-container {
   height: 100%;
   float: left;
@@ -173,8 +172,8 @@ ui-editor {
       }
 
       .boolean-property {
-          border-top-right-radius: 0 !important;
-          border-bottom-right-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
       }
 
       .fancyButton {
@@ -341,8 +340,9 @@ ui-editor {
       #grip {
         display: inline; //?
         position: absolute;
-        left:50%; top:50%;
-        cursor:pointer;
+        left: 50%;
+        top: 50%;
+        cursor: pointer;
         color: white;
         font-size: 11px;
         z-index: 999;
@@ -353,7 +353,8 @@ ui-editor {
         #grip;
 
         margin-top: -12px;
-        height: 12px; width:12px;
+        height: 12px;
+        width: 12px;
         top: 0;
         left: inherit;
         right: 0;
@@ -367,10 +368,11 @@ ui-editor {
       .form-left {
         #grip;
 
-        height: 12px; width:12px;
-        left:-12px;
+        height: 12px;
+        width: 12px;
+        left: -12px;
 
-        margin-left:0;
+        margin-left: 0;
         margin-top: -6px;
       }
 
@@ -381,33 +383,38 @@ ui-editor {
         //height: 12px;
         left: 0;
         top: 0;
-        margin-top:-16px;
+        margin-top: -16px;
       }
 
       .form-right {
         #grip;
 
-        height: 12px; width:12px;
-        right:-12px; left:auto;
+        height: 12px;
+        width: 12px;
+        right: -12px;
+        left: auto;
 
-        margin-left:0;
+        margin-left: 0;
         margin-top: -6px;
       }
 
       .form-up {
         #grip;
 
-        height: 14px; width:12px;
-        top:0;
-        margin-top:-14px;
+        height: 14px;
+        width: 12px;
+        top: 0;
+        margin-top: -14px;
         margin-left: -6px;
       }
 
       .form-down {
         #grip;
-        height: 14px; width:12px;
-        bottom:-14px; top:auto;
-        margin-top:0;
+        height: 14px;
+        width: 12px;
+        bottom: -14px;
+        top: auto;
+        margin-top: 0;
         margin-left: -6px;
       }
     }
@@ -421,7 +428,7 @@ ui-editor {
       left: 0;
       bottom: 0;
       right: 0;
-      background-color:#e1ebbd;
+      background-color: #e1ebbd;
       background-size: 128px 128px;
       background: repeating-linear-gradient(
               @orientation,
@@ -493,7 +500,6 @@ ui-editor {
     }
 
     .loop(@counter) when (@counter > 0) {
-
 
       .form-edit .columnBackground-@{counter}:before {
         content: "@{counter}";
@@ -604,7 +610,6 @@ ui-editor {
     padding: 1px;
   }
 }
-
 
 .selectButtons {
   list-style-type: none;

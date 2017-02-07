@@ -23,25 +23,25 @@ export class ElasticInputDirective implements OnInit, OnDestroy, OnChanges {
     @Input('elastic-input')
     private editing : boolean = false;
     private wrapper : HTMLElement;
-    private mirror  : HTMLElement;
+    private mirror : HTMLElement;
 
     private lastValue = undefined;
 
     // constructor
 
-    constructor (private element: ElementRef) {
+    constructor(private element : ElementRef) {
     }
 
     // event listener
 
     @HostListener('input', ['$event.target'])
-    onInput (): void {
+    onInput() : void {
         this.update();
     }
 
     // private
 
-    private setMirrorStyle(mirror: HTMLElement, element: HTMLElement) {
+    private setMirrorStyle(mirror : HTMLElement, element : HTMLElement) {
         let style = window.getComputedStyle(element);
 
         ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle',
@@ -65,7 +65,7 @@ export class ElasticInputDirective implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    private update () {
+    private update() {
         if (this.editing) {
             let value = this.element.nativeElement.value;
 
@@ -84,7 +84,7 @@ export class ElasticInputDirective implements OnInit, OnDestroy, OnChanges {
 
     // OnInit
 
-    ngOnInit (): void {
+    ngOnInit() : void {
         // create wrapper
 
         this.wrapper = document.createElement('div');
@@ -110,7 +110,7 @@ export class ElasticInputDirective implements OnInit, OnDestroy, OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (this.mirror)
             this.setMirrorStyle(this.mirror, this.element.nativeElement);
 
@@ -119,7 +119,7 @@ export class ElasticInputDirective implements OnInit, OnDestroy, OnChanges {
 
     // OnDestroy
 
-    ngOnDestroy () : void {
+    ngOnDestroy() : void {
         this.mirror.remove();
         this.wrapper.remove();
     }
@@ -130,10 +130,10 @@ class AbstractEditable implements ControlValueAccessor {
 
     private editing : boolean = false;
 
-    private onChange: any = Function.prototype;
-    private onTouched: any = Function.prototype;
+    private onChange : any = Function.prototype;
+    private onTouched : any = Function.prototype;
 
-    private _value: string = '';
+    private _value : string = '';
 
     // constructor
 
@@ -142,11 +142,11 @@ class AbstractEditable implements ControlValueAccessor {
 
     // methods
 
-    get value(): any {
+    get value() : any {
         return this._value;
     }
 
-    set value(v: any) {
+    set value(v : any) {
         if (v !== this._value) {
             this._value = v;
 
@@ -162,7 +162,7 @@ class AbstractEditable implements ControlValueAccessor {
         // noop
     }
 
-    copyStyle (from: any, to: any) {
+    copyStyle(from : any, to : any) {
         let style = window.getComputedStyle(from);
 
         ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle',
@@ -210,7 +210,7 @@ class AbstractEditable implements ControlValueAccessor {
 
     // implement AfterViewInit
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() : void {
         this.setStyle();
     }
 
@@ -219,21 +219,21 @@ class AbstractEditable implements ControlValueAccessor {
     /**
      * Write a new value to the element.
      */
-    writeValue(value: any): void {
+    writeValue(value : any) : void {
         this.value = value;
     }
 
     /**
      * Set the function to be called when the control receives a change event.
      */
-    registerOnChange(onChange : any): void {
+    registerOnChange(onChange : any) : void {
         this.onChange = onChange;
     }
 
     /**
      * Set the function to be called when the control receives a touch event.
      */
-    registerOnTouched(onTouched : any): void {
+    registerOnTouched(onTouched : any) : void {
         this.onTouched = onTouched;
     }
 
@@ -243,7 +243,7 @@ class AbstractEditable implements ControlValueAccessor {
      *
      * @param isDisabled
      */
-    setDisabledState?(isDisabled: boolean): void {
+    setDisabledState?(isDisabled : boolean) : void {
         // TODO?
     }
 }
@@ -276,7 +276,9 @@ export class EditableLabel extends AbstractEditable implements AfterViewInit {
     // override
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {
@@ -332,7 +334,9 @@ export class EditableH1 extends AbstractEditable implements AfterViewInit {
     }
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {
@@ -388,7 +392,9 @@ export class EditableH2 extends AbstractEditable implements AfterViewInit {
     }
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {
@@ -444,7 +450,9 @@ export class EditableH3 extends AbstractEditable implements AfterViewInit {
     }
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {
@@ -500,7 +508,9 @@ export class EditableH4 extends AbstractEditable implements AfterViewInit {
     }
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {
@@ -556,7 +566,9 @@ export class EditableH5 extends AbstractEditable implements AfterViewInit {
     }
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {
@@ -616,7 +628,9 @@ export class EditableButton extends AbstractEditable implements AfterViewInit {
     }
 
     focus() {
-        setTimeout(_ => {this.input.nativeElement.focus();} );
+        setTimeout(_ => {
+            this.input.nativeElement.focus();
+        });
     }
 
     setStyle() {

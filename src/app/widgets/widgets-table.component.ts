@@ -3,25 +3,25 @@ import {Component, Directive, Input, Output, EventEmitter, HostListener, Injecta
 // Renderer
 
 class Renderer {
-    render (column : any, value : any) : string {
+    render(column : any, value : any) : string {
         return value.toString(); // default
     }
 }
 
 class StringRenderer extends Renderer {
-    render (column : any, value : any) : string {
+    render(column : any, value : any) : string {
         return value;
     }
 }
 
 class NumberRenderer extends Renderer {
-    render (column : any, value : any) : string {
+    render(column : any, value : any) : string {
         return value.toString();
     }
 }
 
 class BooleanRenderer extends Renderer {
-    render (column : any, value : any) : string {
+    render(column : any, value : any) : string {
         return '<input type="checkbox" disabled="disabled" ' + (value ? 'checked="checked"' : '') + '/>';
     }
 }
@@ -56,7 +56,7 @@ export class TableModel {
         return this;
     }
 
-    sortByColumn(index: number, sort : (v1 : any, v2 : any)=>number) : TableModel {
+    sortByColumn(index : number, sort : (v1 : any, v2 : any)=>number) : TableModel {
         return this;
     }
 }
@@ -84,7 +84,7 @@ export class TupleTableModel extends TableModel {
         return this.data.length;
     }
 
-    sortByColumn(column: number, sort : (v1 : any, v2 : any)=>number) : TableModel {
+    sortByColumn(column : number, sort : (v1 : any, v2 : any)=>number) : TableModel {
         this.data = this.data.sort((row1 : any[], row2 : any[]) => sort(row1[column], row2[column]));
 
         return this;
@@ -95,7 +95,7 @@ export class PagedTableModel extends TableModel {
     // instance data
 
     private pageSize : number;
-    private currentPage: number = 0;
+    private currentPage : number = 0;
     private tableModel : TableModel;
     private rows : number;
     private totalRows : number;
@@ -122,7 +122,7 @@ export class PagedTableModel extends TableModel {
         this.totalRows = this.tableModel.getNRows();
         this.startRow = this.currentPage * this.pageSize;
         this.rows = this.startRow + this.pageSize > this.totalRows ?
-            this.totalRows - this.startRow :
+        this.totalRows - this.startRow :
             this.pageSize;
     }
 
@@ -133,7 +133,7 @@ export class PagedTableModel extends TableModel {
     }
 
 
-    sortByColumn(index: number, sort : (v1 : any, v2 : any)=>number) : TableModel {
+    sortByColumn(index : number, sort : (v1 : any, v2 : any)=>number) : TableModel {
         this.tableModel.sortByColumn(index, sort);
 
         return this;
@@ -164,8 +164,8 @@ export class ComparatorFactory {
 
     constructor() {
         this
-            .register("string",  this.compareObjects)
-            .register("number",  this.compareObjects)
+            .register("string", this.compareObjects)
+            .register("number", this.compareObjects)
             .register("boolean", this.compareBooleans)
     }
 
@@ -216,8 +216,8 @@ export class RenderFactory {
 
     constructor() {
         this
-            .register("string",  new StringRenderer())
-            .register("number",  new NumberRenderer())
+            .register("string", new StringRenderer())
+            .register("number", new NumberRenderer())
             .register("boolean", new BooleanRenderer())
     }
 
@@ -238,24 +238,24 @@ export class RenderFactory {
 export class NgTableSortingDirective {
     // input
 
-    @Input() public ngTableSorting:any;
-    @Input() public column:any;
+    @Input() public ngTableSorting : any;
+    @Input() public column : any;
 
     // output
 
-    @Output() public sortChanged:EventEmitter<any> = new EventEmitter();
+    @Output() public sortChanged : EventEmitter<any> = new EventEmitter();
 
     @Input()
-    public get config():any {
+    public get config() : any {
         return this.ngTableSorting;
     }
 
-    public set config(value:any) {
+    public set config(value : any) {
         this.ngTableSorting = value;
     }
 
     @HostListener('click', ['$event', '$target'])
-    public onToggleSort(event:any):void {
+    public onToggleSort(event : any) : void {
         if (event) {
             event.preventDefault();
         }
@@ -310,22 +310,25 @@ export class NgTableComponent {
     private rowIndices : number[];
     private renderer : Renderer[];
     private pageTableModel : PagedTableModel;
-    @Input() public set tableModel(model : TableModel) {
+
+    @Input()
+    public set tableModel(model : TableModel) {
         this._tableModel = model;
         if (model instanceof PagedTableModel)
             this.pageTableModel = <PagedTableModel>model;
 
-        this.rowIndices = new Array(model.getNRows()).fill(0).map((x,i)=>i);
+        this.rowIndices = new Array(model.getNRows()).fill(0).map((x, i) => i);
     }
 
     // input
 
-    @Input() public config:any = {};
+    @Input() public config : any = {};
+
     @Input()
-    public set columns(columns: any[]) {
+    public set columns(columns : any[]) {
         this._columns = columns;
 
-       // prepare renderer
+        // prepare renderer
 
         this.renderer = columns.map(column => this.renderFactory.getRenderer(column.type));
     }
@@ -346,14 +349,14 @@ export class NgTableComponent {
 
     // public
 
-    public get columns(): any[] {
+    public get columns() : any[] {
         return this._columns;
     }
 
     public get configColumns() : any {
-        let sortColumns:Array<any> = [];
+        let sortColumns : Array<any> = [];
 
-        this.columns.forEach((column:any) => {
+        this.columns.forEach((column : any) => {
             if (column.sort) {
                 sortColumns.push(column);
             }
@@ -377,15 +380,15 @@ export class NgTableComponent {
 
         this.pageTableModel.setPage(this.currentPage - 1);
 
-        this.rowIndices = new Array(this.pageTableModel.getNRows()).fill(0).map((x,i)=>i);
+        this.rowIndices = new Array(this.pageTableModel.getNRows()).fill(0).map((x, i) => i);
     }
 
-    public onSortChanged(column:any) : void {
+    public onSortChanged(column : any) : void {
         // remove from other columns
 
         let index = 0;
 
-        this._columns.forEach((col:any, i) => {
+        this._columns.forEach((col : any, i) => {
             if (col.name !== column.name) {
                 col.sort = '';
             }
@@ -400,7 +403,7 @@ export class NgTableComponent {
         //this.tableChanged.emit({sorting: this.configColumns});
     }
 
-    public render(row: number, col : number) : string {
+    public render(row : number, col : number) : string {
         let data = this._tableModel.getData(row, col);
 
         return this.renderer[col].render(this.columns[col], data);

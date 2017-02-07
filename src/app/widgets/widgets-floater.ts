@@ -37,12 +37,12 @@ export class Floater implements AfterViewInit {
     // instance data
 
     @ViewChild("container")
-    container: ElementRef;
+    container : ElementRef;
 
-    onDock: EventEmitter<any>;
+    onDock : EventEmitter<any>;
 
     component : ComponentRef<Floater>;
-    body: TemplateRef <Object>;
+    body : TemplateRef <Object>;
 
     title : string = "Title";
     drag : string;
@@ -55,7 +55,7 @@ export class Floater implements AfterViewInit {
     //width : number;
     //height : number;
 
-    onDocumentMouseMove = (event: any) => {
+    onDocumentMouseMove = (event : any) => {
         if (this.drag) {
             let deltaX = event.clientX - this.clientX;
             let deltaY = event.clientY - this.clientY;
@@ -87,7 +87,7 @@ export class Floater implements AfterViewInit {
         } // if
     };
 
-    onDocumentMouseUp = (event: any) => {
+    onDocumentMouseUp = (event : any) => {
         this.drag = undefined;
 
         document.removeEventListener('mousemove', this.onDocumentMouseMove);
@@ -96,7 +96,7 @@ export class Floater implements AfterViewInit {
 
     // constructor
 
-    constructor(protected element: ElementRef) {
+    constructor(protected element : ElementRef) {
     }
 
     // events
@@ -129,18 +129,18 @@ export class Floater implements AfterViewInit {
     // private
 
     private resize(w : number, h : number) {
-        this.container.nativeElement.style.width  = w + "px";
+        this.container.nativeElement.style.width = w + "px";
         this.container.nativeElement.style.height = h + "px";
 
-        this.bounds.width  = w;
+        this.bounds.width = w;
         this.bounds.height = h;
     }
 
-    private moveBy(deltaX: number, deltaY: number) {
+    private moveBy(deltaX : number, deltaY : number) {
         this.move(this.bounds.x + deltaX, this.bounds.y + deltaY);
     }
 
-    private move(x: number, y: number) {
+    private move(x : number, y : number) {
         // remember values
 
         this.bounds.x = x;
@@ -178,10 +178,10 @@ export class Floater implements AfterViewInit {
         if (x - rect.left <= 4)
             drag = "resize-left";
 
-        else if (rect.right - x  <= 4)
+        else if (rect.right - x <= 4)
             drag = "resize-right";
 
-        if (rect.bottom - y  <= 4)
+        if (rect.bottom - y <= 4)
             if (drag == 'resize')
                 drag = "resize-bottom";
             else
@@ -208,7 +208,7 @@ export class Floater implements AfterViewInit {
 
     // AfterViewInit
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() : void {
         let bounds = this.container.nativeElement.getBoundingClientRect();
 
         if (!this.bounds.x) {
@@ -227,13 +227,13 @@ export class Floater implements AfterViewInit {
 }
 
 export interface FloaterContainer {
-    open(title : string, bounds : any, body: TemplateRef <Object>, onClose : EventEmitter<any>) : ComponentRef<Floater>;
+    open(title : string, bounds : any, body : TemplateRef <Object>, onClose : EventEmitter<any>) : ComponentRef<Floater>;
 }
 
 @Directive({
     selector: "[floating]"
 })
-export class Floating  implements AfterViewInit {
+export class Floating implements AfterViewInit {
     // instance data
 
     @Input()
@@ -243,12 +243,12 @@ export class Floating  implements AfterViewInit {
     @Input('title')
     private title : string = "Title";
 
-    @Output() onFloat: EventEmitter<any> = new EventEmitter();
-    @Output() onDock: EventEmitter<any> = new EventEmitter();
+    @Output() onFloat : EventEmitter<any> = new EventEmitter();
+    @Output() onDock : EventEmitter<any> = new EventEmitter();
 
-    @ContentChild("body") private body: TemplateRef <Object>;
+    @ContentChild("body") private body : TemplateRef <Object>;
 
-    protected floater: ComponentRef<Floater>;
+    protected floater : ComponentRef<Floater>;
 
     private bounds : any = {};
 
@@ -256,30 +256,31 @@ export class Floating  implements AfterViewInit {
 
     // constructor
 
-    constructor(protected viewContainerRef: ViewContainerRef) {
+    constructor(protected viewContainerRef : ViewContainerRef) {
         // subscribe to events
 
         this.onFloat.subscribe((event) => {
             // destroy embedded view?
-setTimeout(() => {
-            if (this.embeddedView) {
-                this.embeddedView.destroy();
+            setTimeout(() => {
+                if (this.embeddedView) {
+                    this.embeddedView.destroy();
 
-                this.embeddedView = undefined;
-            }
-}, 0);
+                    this.embeddedView = undefined;
+                }
+            }, 0);
         });
 
-        this.onDock.subscribe((event) => {setTimeout(() => {
-            // destroy floater
+        this.onDock.subscribe((event) => {
+            setTimeout(() => {
+                // destroy floater
 
-            this.floater.destroy();
-            this.floater = undefined;
+                this.floater.destroy();
+                this.floater = undefined;
 
-            // embed view
+                // embed view
 
-            this.embedView();
-}, 0);
+                this.embedView();
+            }, 0);
         })
     }
 
@@ -299,13 +300,13 @@ setTimeout(() => {
 
         // create floater
 
-        this.floater = this.container.open(this.title ? this.title  : "Title", this.bounds, this.body, this.onDock);
+        this.floater = this.container.open(this.title ? this.title : "Title", this.bounds, this.body, this.onDock);
     }
 
 
     // AfterViewInit
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() : void {
         if (this.floating)
             this.float(this.bounds);
 

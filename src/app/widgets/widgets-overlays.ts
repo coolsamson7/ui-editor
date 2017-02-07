@@ -1,11 +1,16 @@
 import {
-  ViewContainerRef, ComponentFactoryResolver, ComponentRef, ApplicationRef, Type,
-  Injectable, AfterViewInit, ElementRef, ChangeDetectorRef, Component
+    ViewContainerRef,
+    ComponentFactoryResolver,
+    ComponentRef,
+    ApplicationRef,
+    Type,
+    Injectable,
+    Component
 } from "@angular/core";
 
 
 export interface OverlayPlacement {
-    host: HTMLElement;
+    host : HTMLElement;
     position : string;
 }
 
@@ -16,14 +21,14 @@ export class Overlay {
 
     // protected
 
-    protected calcPosition(element: HTMLElement) : { top: number, left: number }  {
+    protected calcPosition(element : HTMLElement) : { top : number, left : number } {
         return this.place(this.placement.host, element, this.placement.position, true);
     }
 
-    private place(host: HTMLElement, target: HTMLElement, placement: string, appendToBody: boolean = false): { top: number, left: number } {
+    private place(host : HTMLElement, target : HTMLElement, placement : string, appendToBody : boolean = false) : { top : number, left : number } {
         let positionStrParts = placement.split("-");
 
-        let hor  = positionStrParts[0];
+        let hor = positionStrParts[0];
         let vert = positionStrParts[1] || "center";
 
         let hostPos = appendToBody ? this.offset(host) : this.position(host);
@@ -31,30 +36,30 @@ export class Overlay {
         let targetWidth = target.offsetWidth;
         let targetHeight = target.offsetHeight;
 
-        let shiftWidth: any = {
-            center: function (): number {
+        let shiftWidth : any = {
+            center: function () : number {
                 return hostPos.left + hostPos.width / 2 - targetWidth / 2;
             },
 
-            left: function (): number {
+            left: function () : number {
                 return hostPos.left;
             },
 
-            right: function (): number {
+            right: function () : number {
                 return hostPos.left + hostPos.width;
             }
         };
 
-        let shiftHeight: any = {
-            center: function (): number {
+        let shiftHeight : any = {
+            center: function () : number {
                 return hostPos.top + hostPos.height / 2 - targetHeight / 2;
             },
 
-            top: function (): number {
+            top: function () : number {
                 return hostPos.top;
             },
 
-            bottom: function (): number {
+            bottom: function () : number {
                 return hostPos.top + hostPos.height;
             }
         };
@@ -88,7 +93,7 @@ export class Overlay {
 
     // private
 
-    private position(nativeEl: HTMLElement): { width: number, height: number, top: number, left: number } {
+    private position(nativeEl : HTMLElement) : { width : number, height : number, top : number, left : number } {
         let offsetParentBCR = {top: 0, left: 0};
 
         const elBCR = this.offset(nativeEl);
@@ -111,7 +116,7 @@ export class Overlay {
         };
     }
 
-    private offset(element: any): { width: number, height: number, top: number, left: number } {
+    private offset(element : any) : { width : number, height : number, top : number, left : number } {
         const bounds = element.getBoundingClientRect();
 
         return {
@@ -122,7 +127,7 @@ export class Overlay {
         };
     }
 
-    private getStyle(element: HTMLElement, cssProp: string): string {
+    private getStyle(element : HTMLElement, cssProp : string) : string {
         if ((element as any).currentStyle) // IE
             return (element as any).currentStyle[cssProp];
 
@@ -134,12 +139,12 @@ export class Overlay {
         return (element.style as any)[cssProp];
     }
 
-    private isStaticPositioned(nativeEl: HTMLElement): boolean {
+    private isStaticPositioned(nativeEl : HTMLElement) : boolean {
         return (this.getStyle(nativeEl, "position") || "static" ) === "static";
     }
 
-    private parentOffsetEl(nativeEl: HTMLElement): any {
-        let offsetParent: any = nativeEl.offsetParent || window.document;
+    private parentOffsetEl(nativeEl : HTMLElement) : any {
+        let offsetParent : any = nativeEl.offsetParent || window.document;
 
         while (offsetParent && offsetParent !== window.document && this.isStaticPositioned(offsetParent)) {
             offsetParent = offsetParent.offsetParent;
@@ -153,16 +158,16 @@ export class Overlay {
 export class Overlays {
     // instance data
 
-     rootViewContainerRef: ViewContainerRef;
+    rootViewContainerRef : ViewContainerRef;
 
     // constructor
 
-    constructor(private resolver: ComponentFactoryResolver, private applicationRef: ApplicationRef) {
+    constructor(private resolver : ComponentFactoryResolver, private applicationRef : ApplicationRef) {
     }
 
     // public
 
-    public createOverlay<C extends Overlay>(host: HTMLElement, position : string, component : Type<C>, parameters : any = undefined) : ComponentRef<C> {
+    public createOverlay<C extends Overlay>(host : HTMLElement, position : string, component : Type<C>, parameters : any = undefined) : ComponentRef<C> {
         let factory = this.resolver.resolveComponentFactory(component);
 
         let ref = this.getRootViewContainer().createComponent(factory);
@@ -173,7 +178,7 @@ export class Overlays {
 
         instance.placement = {
             host: host,
-            position:  position
+            position: position
         };
 
         if (parameters) {
@@ -197,12 +202,12 @@ export class Overlays {
 }
 
 @Component({
-  selector: 'overlay-container',
-  template: '<div></div>'
+    selector: 'overlay-container',
+    template: '<div></div>'
 })
 @Injectable()
 export class OverlayContainer {
-  constructor(viewContainer : ViewContainerRef, overlays : Overlays) {
-    overlays.rootViewContainerRef = viewContainer;
-  }
+    constructor(viewContainer : ViewContainerRef, overlays : Overlays) {
+        overlays.rootViewContainerRef = viewContainer;
+    }
 }

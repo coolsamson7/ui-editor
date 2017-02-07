@@ -1,19 +1,18 @@
-
 class Check {
     // instance data
 
-    property: string;
+    property : string;
     protected snapshot : any;
 
     // constructor
 
-    constructor(property: string) {
-        this.property  = property;
+    constructor(property : string) {
+        this.property = property;
     }
 
     // protected
 
-    protected compare(oldValue: any, newValue: any) : boolean {
+    protected compare(oldValue : any, newValue : any) : boolean {
         // remember new value
 
         this.snapshot = newValue;
@@ -24,7 +23,7 @@ class Check {
         //if (changed)
         //   console.log(this.property + ": '" + JSON.stringify(oldValue) + "' -> '" + JSON.stringify(newValue) + "'");
 
-        return changed
+        return changed;
     }
 
     // public
@@ -46,7 +45,7 @@ class CompositeCheck extends Check {
 
     // constructor
 
-    constructor(prop: string, properties : string[]) {
+    constructor(prop : string, properties : string[]) {
         super(prop);
 
         this.properties = properties;
@@ -66,7 +65,7 @@ class CompositeCheck extends Check {
 
     // override
 
-    public compare(snapshot: any, newValue: any) : boolean {
+    public compare(snapshot : any, newValue : any) : boolean {
         let diff = false;
 
         if (newValue) {
@@ -100,7 +99,7 @@ class CompositeCheck extends Check {
 class ArrayCheck extends Check {
     // constructor
 
-    constructor(property: string) {
+    constructor(property : string) {
         super(property);
     }
 
@@ -118,7 +117,7 @@ class ArrayCheck extends Check {
 
     // override
 
-    public compare(oldValue: any, newValue: any) : boolean {
+    public compare(oldValue : any, newValue : any) : boolean {
         let diff = false;
 
         if (newValue) {

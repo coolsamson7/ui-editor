@@ -5,9 +5,9 @@ import {EditComponent} from "./editor-edit-component.component";
 export interface Action {
     push();
 
-    revert(): void;
+    revert() : void;
 
-    remove(): void;
+    remove() : void;
 }
 
 export class ActionHistory {
@@ -90,7 +90,7 @@ export class ModificationAction extends AbstractAction {
     constructor(history : ActionHistory, name : string, editorService : EditorService, object : any, original : any) {
         super(history, name);
 
-        this.object   = object;
+        this.object = object;
         this.original = original;
         this.editorService = editorService;
     }
@@ -122,9 +122,9 @@ export class ReparentAction extends AbstractAction {
     constructor(history : ActionHistory, name : string = "reparent", component : any, newParent : any) {
         super(history, name);
 
-        this.component   = component;
-        this.oldParent   = component.$parent;
-        this.newParent   = newParent;
+        this.component = component;
+        this.oldParent = component.$parent;
+        this.newParent = newParent;
     }
 
     // override
@@ -171,10 +171,10 @@ export class ReorderChildAction extends AbstractAction {
 
     // constructor
 
-    constructor(history : ActionHistory, name : string = "move", object: any, i1: number, i2: number) {
+    constructor(history : ActionHistory, name : string = "move", object : any, i1 : number, i2 : number) {
         super(history, name);
 
-        this.object   = object;
+        this.object = object;
         this.i1 = i1;
         this.i2 = i2;
     }
@@ -252,7 +252,7 @@ export class DeleteAction extends AbstractAction {
     constructor(history : ActionHistory, name : string = "delete", object : any) {
         super(history, name);
 
-        this.object   = object;
+        this.object = object;
     }
 
     // override
@@ -330,7 +330,7 @@ export class EditorActionHistory extends ActionHistory {
 
         this.currentComponent = selection;
 
-        this.copy   = undefined;
+        this.copy = undefined;
         this.modificationAction = undefined;
 
         if (this.currentComponent) {
@@ -363,11 +363,11 @@ export class EditorActionHistory extends ActionHistory {
         this.pushAction(new CreateAction(this, "create", component, parent));
     }
 
-    public deleted(component: any) {
+    public deleted(component : any) {
         this.pushAction(new DeleteAction(this, "delete", component));
     }
 
-    public reorderChild(parent: any, i1: number, i2: number) {
+    public reorderChild(parent : any, i1 : number, i2 : number) {
         this.pushAction(new ReorderChildAction(this, "reorder", parent, i1, i2))
     }
 }

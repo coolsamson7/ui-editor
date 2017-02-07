@@ -1,4 +1,4 @@
-import {OnInit, Input, AfterViewInit, OnDestroy, Component, ViewChild} from "@angular/core";
+import {OnInit, Input, Component, ViewChild} from "@angular/core";
 import {TreeComponent} from "../widgets/widgets-tree";
 
 @Component({
@@ -15,11 +15,11 @@ export class ComponentTreeComponent implements OnInit {
     // instance data
 
     @Input()
-    private model: any;
+    private model : any = undefined;
     @Input('root')
     private root : any;
     @ViewChild(TreeComponent)
-    private tree: TreeComponent;
+    private tree : TreeComponent;
 
     // constructor
 
@@ -60,15 +60,15 @@ export class ComponentTreeComponent implements OnInit {
         this.tree.selectNode(model);
     }
 
-    expandPath(path: any[]) {
+    expandPath(path : any[]) {
         this.tree.expandPath(path);
     }
 
     // OnInit
 
-    ngOnInit(): void {
-      this.model.onSelect.subscribe((selection) => {
-        this.tree.expandPath(this.createPath(selection));
-      });
+    ngOnInit() : void {
+        this.model.onSelect.subscribe((selection) => {
+            this.tree.expandPath(this.createPath(selection));
+        });
     }
 }

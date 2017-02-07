@@ -1,5 +1,4 @@
 import {
-    Input,
     SimpleChanges,
     ViewContainerRef,
     OnChanges,
@@ -10,19 +9,21 @@ import {
     ComponentFactory,
     ComponentRef,
     TemplateRef,
-    ComponentFactoryResolver, Injector, ChangeDetectorRef, OnDestroy
+    ComponentFactoryResolver,
+    Injector,
+    ChangeDetectorRef,
+    OnDestroy
 } from "@angular/core";
 import {FloaterContainer, Floater, Floating} from "../widgets/widgets-floater";
 import {EditorComponent} from "./editor.component";
 import {RenderComponent} from "./editor-render-component.component";
 import {Tabs, Tab} from "../widgets/widgets-tabs";
-import {ComponentRegistry, UIComponent} from "./editor-component.class";
+import {ComponentRegistry} from "./editor-component.class";
 import {EditorService} from "./editor-service";
 import {MenuBuilder} from "../widgets/widgets-context-menu";
 import {EditComponent} from "./editor-edit-component.component";
 import {ReparentAction, EditorActionHistory} from "./editor-history.class";
 import {ToastService} from "../widgets/widgets-toast";
-import {ChangeDetector} from "./editor-change-detector";
 import {Shortcut} from "../ui/ui-shortcut";
 import {NgbActiveModal, NgbModalRef, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
@@ -33,14 +34,14 @@ export class Dialog implements OnDestroy {
     // callbacks
 
     public buttons : any = [];
-    public activeModal: NgbActiveModal;
+    public activeModal : NgbActiveModal;
     private shortcut : Shortcut;
 
     // constructor
 
-    constructor(private injector: Injector) {
+    constructor(private injector : Injector) {
         this.activeModal = injector.get(NgbActiveModal);
-        this.shortcut    = injector.get(Shortcut);
+        this.shortcut = injector.get(Shortcut);
 
         this.shortcut.addLayer();
     }
@@ -51,7 +52,9 @@ export class Dialog implements OnDestroy {
         if (command.shortCut)
             this.shortcut.register({
                 shortCut: command.shortCut,
-                action: () => {this.executeCommand(command);}
+                action: () => {
+                    this.executeCommand(command);
+                }
             });
 
         this.buttons.push(command);
@@ -60,11 +63,11 @@ export class Dialog implements OnDestroy {
     // private
 
     private cancelCommand() {
-        return this.buttons.find((button)=>button.isCancel);
+        return this.buttons.find((button) => button.isCancel);
     }
 
     private defaultCommand() {
-        return this.buttons.find((button)=>button.isDefault);
+        return this.buttons.find((button) => button.isDefault);
     }
 
     private executeCommand(command : any) {
@@ -84,7 +87,7 @@ export class Dialog implements OnDestroy {
     }
 
     private clicked(command : any) {
-       return this.executeCommand(command);
+        return this.executeCommand(command);
 
         //this.activeModal.close(result);
     }
@@ -103,7 +106,7 @@ export class Dialog implements OnDestroy {
 @Component({
     selector: 'open-file-dialog',
     //templateUrl: '/portal/template/demo/openFile.html' // TODO -> add dialog stuff
-  template: `
+    template: `
 <div class="modal-header">
     <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
@@ -129,7 +132,7 @@ export class OpenFileDialog extends Dialog {
 
     // constructor
 
-    constructor(injector: Injector) {
+    constructor(injector : Injector) {
         super(injector);
 
         this.addButton({
@@ -154,7 +157,7 @@ export class OpenFileDialog extends Dialog {
     // callbacks
 
     fileChangeEvent($event) {
-        if ( $event.target.files.length == 1) {
+        if ($event.target.files.length == 1) {
             let file : File = $event.target.files[0];
 
             let reader = new FileReader();
@@ -289,6 +292,7 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
     private user : "andi";
     private password : "geheim";
+
     login() {
         console.log("login");
 
@@ -329,7 +333,7 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
     // implement FloaterContainer
 
-    open(title : string, bounds : any, body: TemplateRef <Object>, onDock : EventEmitter<any>) : ComponentRef<Floater>{
+    open(title : string, bounds : any, body : TemplateRef <Object>, onDock : EventEmitter<any>) : ComponentRef<Floater> {
         let component = this.viewContainerRef.createComponent(this.factory);
 
         const floater = component.instance as Floater;
@@ -347,7 +351,7 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
     // constructor
 
-    constructor(private injector: Injector, private toasts : ToastService, private componentRegistry : ComponentRegistry, private editorService : EditorService,  resolver: ComponentFactoryResolver, protected viewContainerRef: ViewContainerRef, private changeDetector: ChangeDetectorRef) {
+    constructor(private injector : Injector, private toasts : ToastService, private componentRegistry : ComponentRegistry, private editorService : EditorService, resolver : ComponentFactoryResolver, protected viewContainerRef : ViewContainerRef, private changeDetector : ChangeDetectorRef) {
         this.factory = resolver.resolveComponentFactory(Floater);
 
         this.changes = new EditorActionHistory(editorService);
@@ -389,7 +393,7 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
     private isChildOf(component1 : any, component2) {
         let comp = component1;
-        while ( comp ) {
+        while (comp) {
             if (comp === component2)
                 return true;
 
@@ -403,10 +407,14 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
         if (this.currentComponent) {
             builder
                 .addSubmenu(builder.menu("Children")
-                    .addItem("Foo", () => {console.log("FOO!"); }))
+                    .addItem("Foo", () => {
+                        console.log("FOO!");
+                    }))
                 .addDivider()
-                .addItem("Delete:⌫", () => {this.editor.selection.onDelete(undefined); });
-                //.addDivider();
+                .addItem("Delete:⌫", () => {
+                    this.editor.selection.onDelete(undefined);
+                });
+            //.addDivider();
         }
     }
 
@@ -415,12 +423,12 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
     // OnChanges
 
     nodeStyle(model : any) {
-       let selected = this.currentComponent == model;
+        let selected = this.currentComponent == model;
 
-       if (!selected)
-           return selected ? {} : {
-           display: 'none'
-           };
+        if (!selected)
+            return selected ? {} : {
+                display: 'none'
+            };
     }
 
     deleteNode() {
@@ -517,7 +525,8 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
             onOk: () => {
                 this.deleteNode();
             },
-            onCancel: () => {},
+            onCancel: () => {
+            },
         };
 
         this.selectionEvent.subscribe((component : any) => {
@@ -554,7 +563,7 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
-       console.log("WTF");
+    ngOnChanges(changes : SimpleChanges) {
+        console.log("WTF");
     }
 }

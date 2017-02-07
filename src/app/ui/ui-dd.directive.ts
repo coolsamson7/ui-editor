@@ -27,7 +27,7 @@ export class DragSourceComponent implements OnChanges {
 
     // constructor
 
-    constructor(private element: ElementRef) {
+    constructor(private element : ElementRef) {
     }
 
     // private
@@ -55,7 +55,7 @@ export class DragSourceComponent implements OnChanges {
 
     // OnChanges
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes : SimpleChanges) {
         this.element.nativeElement.setAttribute('draggable', this.draggable ? 'true' : 'false');
     }
 
@@ -65,23 +65,24 @@ export class DragSourceComponent implements OnChanges {
     selector: '[drop-target]',
     host: {
         '(dragenter)': 'onDragEnter($event)',
-        '(dragover)':  'onDragOver($event)',
+        '(dragover)': 'onDragOver($event)',
         '(dragleave)': 'onDragLeave($event)',
-        '(drop)':      'onDrop($event)'
+        '(drop)': 'onDrop($event)'
     }
 })
 @Injectable()
 export class DropTargetComponent {
     // instance data
 
-    @Output() dropped: EventEmitter<any> = new EventEmitter();
+    @Output() dropped : EventEmitter<any> = new EventEmitter();
 
     //@Input
     dropEnabled : boolean = true;
 
-    @Input("dropEnabled") set droppable(value:boolean) {
+    @Input("dropEnabled") set droppable(value : boolean) {
         this.dropEnabled = !!value;
     }
+
     @Input("allowDrop")
     allowDrop : (object : any) => boolean;
 
@@ -96,15 +97,17 @@ export class DropTargetComponent {
 
     // constructor
 
-    constructor(private element: ElementRef) {
+    constructor(private element : ElementRef) {
     }
 
     // private
 
     private position(e) : string {
         let el = this.element.nativeElement;
-        let width = el.offsetWidth; let w3 = width / 3;
-        let height = el.offsetHeight; let h3 = height / 3;
+        let width = el.offsetWidth;
+        let w3 = width / 3;
+        let height = el.offsetHeight;
+        let h3 = height / 3;
 
         let x = e.offsetX;
         let y = e.offsetY;
@@ -147,7 +150,7 @@ export class DropTargetComponent {
     }
 
     private dragData(clear : boolean = false) : any {
-        let data =  DragSourceComponent.dragData;
+        let data = DragSourceComponent.dragData;
 
         if (clear)
             DragSourceComponent.dragData = undefined;
@@ -195,7 +198,7 @@ export class DropTargetComponent {
     }
 
     onDragOver(event) {
-        if (this.screenX !== event.screenX || this.screenY !== event.screenY ) {
+        if (this.screenX !== event.screenX || this.screenY !== event.screenY) {
             if (this.dropAllowed()) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -204,8 +207,8 @@ export class DropTargetComponent {
 
                 event.dataTransfer.dropEffect = 'move';
             }
-        else
-            event.dataTransfer.dropEffect = "none";
+            else
+                event.dataTransfer.dropEffect = "none";
 
             // remember
 

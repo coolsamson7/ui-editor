@@ -29,9 +29,9 @@ export class RenderComponent implements OnChanges {
     @Input()
     private component : any;
     @Input()
-    private context: any;
+    private context : any;
     @ViewChild('container', {read: ViewContainerRef})
-    private container: ViewContainerRef;
+    private container : ViewContainerRef;
     private componentRef : ComponentRef<any>;
     @Input('render-component')
     private visible;
@@ -64,7 +64,7 @@ export class RenderComponent implements OnChanges {
 
         let module = this.compiler.compileModuleAndAllComponentsSync(TemplateModule);
 
-        return  module.componentFactories.find((comp) =>
+        return module.componentFactories.find((comp) =>
             comp.componentType === TemplateComponent
         );
 
@@ -93,7 +93,7 @@ export class RenderComponent implements OnChanges {
 
     // implement OnChanges
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes : SimpleChanges) : void {
         if (this.visible)
             this.render();
     }
