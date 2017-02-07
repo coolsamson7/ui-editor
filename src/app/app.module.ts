@@ -63,6 +63,7 @@ import {Breadcrumb} from "./widgets/widgets-breadcrumb";
 import {Floater, Floating} from "./widgets/widgets-floater";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {CommonModule} from "@angular/common";
+import {Dialogs, DialogComponent} from "./widgets/widgets-dialog.component";
 
 
 const services = [
@@ -81,7 +82,9 @@ const services = [
     ToastService,
     Overlays,
 
-    DownloadService
+    DownloadService,
+
+    Dialogs
 ];
 
 const components = [
@@ -117,7 +120,9 @@ const components = [
 
     FocusDirective,
 
-    Breadcrumb
+    Breadcrumb,
+
+    DialogComponent
 ];
 
 @NgModule({

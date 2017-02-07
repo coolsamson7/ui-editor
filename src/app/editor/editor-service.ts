@@ -25,14 +25,6 @@ export class EditorService {
             } // if
         }
 
-        /* TEST
-
-         for (let diff of diffs) {
-         console.log("path: " + diff.path);
-         console.log(diff.v1);
-         console.log(diff.v2);
-         }*/
-
         // done
 
         return diffs.length > 0;

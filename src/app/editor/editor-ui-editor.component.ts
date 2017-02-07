@@ -1,18 +1,16 @@
 import {
-    SimpleChanges,
-    ViewContainerRef,
-    OnChanges,
-    Component,
-    ViewChild,
-    Injectable,
-    EventEmitter,
-    ComponentFactory,
-    ComponentRef,
-    TemplateRef,
-    ComponentFactoryResolver,
-    Injector,
-    ChangeDetectorRef,
-    OnDestroy
+  SimpleChanges,
+  ViewContainerRef,
+  OnChanges,
+  Component,
+  ViewChild,
+  Injectable,
+  EventEmitter,
+  ComponentFactory,
+  ComponentRef,
+  TemplateRef,
+  ComponentFactoryResolver,
+  Injector
 } from "@angular/core";
 import {FloaterContainer, Floater, Floating} from "../widgets/widgets-floater";
 import {EditorComponent} from "./editor.component";
@@ -24,160 +22,73 @@ import {MenuBuilder} from "../widgets/widgets-context-menu";
 import {EditComponent} from "./editor-edit-component.component";
 import {ReparentAction, EditorActionHistory} from "./editor-history.class";
 import {ToastService} from "../widgets/widgets-toast";
-import {Shortcut} from "../ui/ui-shortcut";
-import {NgbActiveModal, NgbModalRef, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Dialog, Dialogs} from "../widgets/widgets-dialog.component";
 
-
-// TODO
-
-export class Dialog implements OnDestroy {
-    // callbacks
-
-    public buttons : any = [];
-    public activeModal : NgbActiveModal;
-    private shortcut : Shortcut;
-
-    // constructor
-
-    constructor(private injector : Injector) {
-        this.activeModal = injector.get(NgbActiveModal);
-        this.shortcut = injector.get(Shortcut);
-
-        this.shortcut.addLayer();
-    }
-
-    // protected
-
-    protected addButton(command : any) {
-        if (command.shortCut)
-            this.shortcut.register({
-                shortCut: command.shortCut,
-                action: () => {
-                    this.executeCommand(command);
-                }
-            });
-
-        this.buttons.push(command);
-    }
-
-    // private
-
-    private cancelCommand() {
-        return this.buttons.find((button) => button.isCancel);
-    }
-
-    private defaultCommand() {
-        return this.buttons.find((button) => button.isDefault);
-    }
-
-    private executeCommand(command : any) {
-        let result = command.run();
-
-        this.activeModal.close(result);
-    }
-
-    // callbacks
-
-    private close() {
-        let cancel = this.cancelCommand();
-        if (cancel)
-            this.executeCommand(cancel);
-        else
-            this.activeModal.close(undefined);
-    }
-
-    private clicked(command : any) {
-        return this.executeCommand(command);
-
-        //this.activeModal.close(result);
-    }
-
-    private label(command : any) : string {
-        return command.label;
-    }
-
-    // OnDestroy
-
-    ngOnDestroy() {
-        this.shortcut.removeLayer();
-    }
-}
 
 @Component({
-    selector: 'open-file-dialog',
-    //templateUrl: '/portal/template/demo/openFile.html' // TODO -> add dialog stuff
-    template: `
-<div class="modal-header">
-    <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <h3 class="modal-title" id="modal-title">{{title}}</h3>
-</div>
-
-<div class="modal-body" id="modal-body">
+  selector: 'open-file-dialog',
+  template: `
+<dialog>
     <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
-</div>
-
-<div class="modal-footer">
-    <!--  [focus]="button.isDefault" -->
-    <button type="button" [ngClass]="{'btn-primary': button.isDefault, 'btn-secondary': !button.isDefault}" class="btn" *ngFor="let button of buttons" (click)="clicked(button)">{{label(button)}}</button>
-</div>
+</dialog>
 `
 })
 export class OpenFileDialog extends Dialog {
-    // instance data
+  // instance data
 
-    private title : string = "Open File";
-    private result;
+  private result;
 
-    // constructor
+  // constructor
 
-    constructor(injector : Injector) {
-        super(injector);
+  constructor() {
+    super("Open File");
+  }
 
-        this.addButton({
-            label: "Ok",
-            isDefault: true, // enter
-            shortCut: "enter",
-            run: () => {
-                return this.result;
-            }
-        });
+  // override Dialog
 
-        this.addButton({
-            label: "Cancel",
-            isCancel: true, // esc
-            shortCut: "esc",
-            run: () => {
-                return undefined;
-            }
-        });
-    }
+  protected buildCommands() : Dialog {
+    return this
+      .addButton({
+        label: "Ok",
+        isDefault: true, // enter
+        shortCut: "enter",
+        run: () => {
+          return this.result;
+        }
+      })
+      .addButton({
+        label: "Cancel",
+        isCancel: true, // esc
+        shortCut: "esc",
+        run: () => {
+          return undefined;
+        }
+      });
+  }
 
-    // callbacks
+  // callbacks
 
-    fileChangeEvent($event) {
-        if ($event.target.files.length == 1) {
-            let file : File = $event.target.files[0];
+  fileChangeEvent($event) {
+    if ($event.target.files.length == 1) {
+      let file : File = $event.target.files[0];
 
-            let reader = new FileReader();
-            reader.onloadend = (e : any) => {
-                this.result = JSON.parse(e.target.result);
-            };
+      let reader = new FileReader();
+      reader.onloadend = (e : any) => {
+        this.result = JSON.parse(e.target.result);
+      };
 
-            reader.readAsText(file);
-        } // if
-    }
+      reader.readAsText(file);
+    } // if
+  }
 }
-// TODO
 
 Injectable()
 @Component({
-    selector: 'ui-editor',
-    host: {
-        'style': 'height: 100%'
-    },
-    template: `
+  selector: 'ui-editor',
+  host: {
+    'style': 'height: 100%'
+  },
+  template: `
 <div class="ui-editor flex-rows" toast-container="">
    <split-pane class="flex-row flex-stretch">
       <!-- left -->
@@ -266,304 +177,297 @@ Injectable()
 `
 })
 export class UIEditorComponent implements OnChanges, FloaterContainer {
-    // instance data
+  // instance data
 
-    //@Input('root')
-    private root : any = {id: "body", children: []};
+  private root : any = {id: "body", children: []};
 
-    private currentComponent : any; // the internal object!
-    private treeModel : any;
+  private currentComponent : any; // the internal object!
+  private treeModel : any;
 
-    @ViewChild(EditorComponent)
-    private editor : EditorComponent;
-    @ViewChild(RenderComponent)
-    private renderComponent : RenderComponent;
-    @ViewChild(Tabs)
-    private tabs : Tabs;
+  @ViewChild(EditorComponent)
+  private editor : EditorComponent;
+  @ViewChild(RenderComponent)
+  private renderComponent : RenderComponent;
+  @ViewChild(Tabs)
+  private tabs : Tabs;
 
-    private mode : string = "edit";
-    private code : any;
-    private self = this;
+  private mode : string = "edit";
+  private code : any;
+  private self = this;
 
-    changes : EditorActionHistory;
+  changes : EditorActionHistory;
 
 
-    // TEST
+  // TEST
 
-    private user : "andi";
-    private password : "geheim";
+  private user : "andi";
+  private password : "geheim";
 
-    login() {
-        console.log("login");
+  login() {
+    console.log("login");
 
+  }
+
+  floatTab(tab) {
+    this.floatTree(tab.bounds());
+  }
+
+  private selectionEvent : EventEmitter<any> = new EventEmitter();
+
+  private factory : ComponentFactory<Floater>;
+
+  @ViewChild(Floating)
+  private floatingTree : Floating;
+
+  private onFloat(event, tree) {
+    this.treeModel.state = this.treeModel.tree.getState();
+
+    this.tabs.setVisible("tree", false);
+  }
+
+  private onDock(event, tree) {
+    this.treeModel.state = this.treeModel.tree.getState();
+
+    this.tabs.setVisible("tree", true);
+    this.tabs.selectTabByName('tree');
+  }
+
+  private floatTree(bounds : ClientRect) {
+    //this.treeModel.state = this.treeModel.tree.getState(); ?
+    this.floatingTree.float({x: bounds.left, y: bounds.top});
+  }
+
+  // TODO REMOVE
+  onChange(event : any) { // model: attribute: newValue:
+  }
+
+  // implement FloaterContainer
+
+  open(title : string, bounds : any, body : TemplateRef <Object>, onDock : EventEmitter<any>) : ComponentRef<Floater> {
+    let component = this.viewContainerRef.createComponent(this.factory);
+
+    const floater = component.instance as Floater;
+
+    // link data
+
+    floater.title = title;
+    floater.component = component;
+    floater.body = body;
+    floater.bounds = bounds;
+    floater.onDock = onDock;
+
+    return component;
+  }
+
+  // constructor
+
+  constructor(private injector : Injector, private toasts : ToastService, private componentRegistry : ComponentRegistry, private editorService : EditorService, resolver : ComponentFactoryResolver, protected viewContainerRef : ViewContainerRef) {
+    this.factory = resolver.resolveComponentFactory(Floater);
+
+    this.changes = new EditorActionHistory(editorService);
+
+    this.setup();
+  }
+
+  // callbacks
+
+  activateTab(tab : any) {
+    if (tab.name == "code") {
+      this.code = this.editorService.copyModel(this.root, true);
+      this.editorService.stripModel(this.code);
     }
+  }
 
-    floatTab(tab) {
-        this.floatTree(tab.bounds());
+  switchMode(tab : Tab) {
+    if (this.mode == "edit") {
+      this.mode = "run";
+      tab.icon = 'glyphicon glyphicon-pencil';
+
+      this.renderComponent.render();
     }
-
-    private selectionEvent : EventEmitter<any> = new EventEmitter();
-
-    private factory : ComponentFactory<Floater>;
-
-    @ViewChild(Floating)
-    private floatingTree : Floating;
-
-    private onFloat(event, tree) {
-        this.treeModel.state = this.treeModel.tree.getState();
-
-        this.tabs.setVisible("tree", false);
+    else {
+      this.mode = "edit";
+      tab.icon = 'glyphicon glyphicon-play';
     }
+  }
 
-    private onDock(event, tree) {
-        this.treeModel.state = this.treeModel.tree.getState();
+  // private
 
-        this.tabs.setVisible("tree", true);
-        this.tabs.selectTabByName('tree');
+  private getIcon(node : any) {
+    return this.componentRegistry.find(node.id).icon;
+  }
+
+  private reparent(component : any, parent : any) {
+    this.changes.pushAction(new ReparentAction(this.changes, "reparent", component, parent));
+  }
+
+  private isChildOf(component1 : any, component2) {
+    let comp = component1;
+    while (comp) {
+      if (comp === component2)
+        return true;
+
+      comp = comp.$parent;
+    } // while
+
+    return false;
+  }
+
+  buildMenu(builder : MenuBuilder) : void {
+    if (this.currentComponent) {
+      builder
+        .addSubmenu(builder.menu("Children")
+          .addItem("Foo", () => {
+            console.log("FOO!");
+          }))
+        .addDivider()
+        .addItem("Delete:⌫", () => {
+          this.editor.selection.onDelete(undefined);
+        });
+      //.addDivider();
     }
+  }
 
-    private floatTree(bounds : ClientRect) {
-        //this.treeModel.state = this.treeModel.tree.getState(); ?
-        this.floatingTree.float({x: bounds.left, y: bounds.top});
-    }
+  menu : Function = this.buildMenu.bind(this);
 
-    // TODO REMOVE
-    onChange(event : any) { // model: attribute: newValue:
-    }
+  // OnChanges
 
-    // implement FloaterContainer
+  nodeStyle(model : any) {
+    let selected = this.currentComponent == model;
 
-    open(title : string, bounds : any, body : TemplateRef <Object>, onDock : EventEmitter<any>) : ComponentRef<Floater> {
-        let component = this.viewContainerRef.createComponent(this.factory);
+    if (!selected)
+      return selected ? {} : {
+        display: 'none'
+      };
+  }
 
-        const floater = component.instance as Floater;
+  deleteNode() {
+    this.editor.selection.onDelete(undefined);
+  }
 
-        // link data
+  private confirm : any;
 
-        floater.title = title;
-        floater.component = component;
-        floater.body = body;
-        floater.bounds = bounds;
-        floater.onDock = onDock;
 
-        return component;
-    }
+  saveLocalJSON(data : any, filename = undefined) : void {
+    if (!filename)
+      filename = 'download.json';
 
-    // constructor
+    if (typeof data === 'object')
+      data = JSON.stringify(data, undefined, 2);
 
-    constructor(private injector : Injector, private toasts : ToastService, private componentRegistry : ComponentRegistry, private editorService : EditorService, resolver : ComponentFactoryResolver, protected viewContainerRef : ViewContainerRef, private changeDetector : ChangeDetectorRef) {
-        this.factory = resolver.resolveComponentFactory(Floater);
+    let blob = new Blob([data], {type: 'text/json'});
 
-        this.changes = new EditorActionHistory(editorService);
+    let mouseEvent = document.createEvent('MouseEvents');
 
-        this.setup();
-    }
+    let a = document.createElement('a');
 
-    // callbacks
+    a.download = filename;
+    a.href = window.URL.createObjectURL(blob);
 
-    activateTab(tab : any) {
-        if (tab.name == "code") {
-            this.code = this.editorService.copyModel(this.root, true);
-            this.editorService.stripModel(this.code);
+    mouseEvent.initEvent('click', true, true);
+
+    a.dispatchEvent(mouseEvent);
+  };
+
+  openFile() {
+    return this.injector.get(Dialogs).open(OpenFileDialog).then(
+      (value) => {
+        if (value) {
+          this.revert();
+          this.setRoot(value);
+
+          return value;
         }
-    }
+      },
+      (reason) => {
+        return reason;
+      });
+  }
 
-    switchMode(tab : Tab) {
-        if (this.mode == "edit") {
-            this.mode = "run";
-            tab.icon = 'glyphicon glyphicon-pencil';
+  private load() : void {
+    this.openFile();
+  }
 
-            this.renderComponent.render();
-        }
-        else {
-            this.mode = "edit";
-            tab.icon = 'glyphicon glyphicon-play';
-        }
-    }
+  private save() {
+    let data = this.editorService.copyModel(this.root, true);
 
-    // private
+    this.editorService.stripModel(data);
 
-    private getIcon(node : any) {
-        return this.componentRegistry.find(node.id).icon;
-    }
+    this.saveLocalJSON(data);
 
-    private reparent(component : any, parent : any) {
-        this.changes.pushAction(new ReparentAction(this.changes, "reparent", component, parent));
-    }
+    this.toasts.info("Saved...", undefined, 2000);
 
-    private isChildOf(component1 : any, component2) {
-        let comp = component1;
-        while (comp) {
-            if (comp === component2)
-                return true;
+    this.changes.clear();
+  }
 
-            comp = comp.$parent;
-        } // while
+  private revert() {
+    this.currentComponent = undefined; // avoid problems with strange editor states?
 
-        return false;
-    }
+    this.changes.revert(); // what about the next change detector which should trigger
+  }
 
-    buildMenu(builder : MenuBuilder) : void {
-        if (this.currentComponent) {
-            builder
-                .addSubmenu(builder.menu("Children")
-                    .addItem("Foo", () => {
-                        console.log("FOO!");
-                    }))
-                .addDivider()
-                .addItem("Delete:⌫", () => {
-                    this.editor.selection.onDelete(undefined);
-                });
-            //.addDivider();
-        }
-    }
+  private isDirty() {
+    return this.changes.isDirty();
+  }
 
-    menu : Function = this.buildMenu.bind(this);
+  private setRoot(root : any) : void {
+    this.editorService.connectModel(root); // setup parent links and create defaults
 
-    // OnChanges
+    this.root = root;
 
-    nodeStyle(model : any) {
-        let selected = this.currentComponent == model;
+    if (this.treeModel)
+      this.treeModel.root = [root];
+  }
 
-        if (!selected)
-            return selected ? {} : {
-                display: 'none'
-            };
-    }
-
-    deleteNode() {
-        this.editor.selection.onDelete(undefined);
-    }
-
-    private confirm : any;
-
-
-    saveLocalJSON(data : any, filename = undefined) : void {
-        if (!filename)
-            filename = 'download.json';
-
-        if (typeof data === 'object')
-            data = JSON.stringify(data, undefined, 2);
-
-        let blob = new Blob([data], {type: 'text/json'});
-
-        let mouseEvent = document.createEvent('MouseEvents');
-
-        let a = document.createElement('a');
-
-        a.download = filename;
-        a.href = window.URL.createObjectURL(blob);
-
-        mouseEvent.initEvent('click', true, true);
-
-        a.dispatchEvent(mouseEvent);
+  private setup() : void {
+    this.confirm = {
+      position: 'right',
+      ok: "Yes",
+      cancel: "No",
+      title: "Delete Node",
+      message: "Really delete?",
+      onOk: () => {
+        this.deleteNode();
+      },
+      onCancel: () => {
+      },
     };
 
-    openFile() {
-        let shortcut = this.injector.get(Shortcut);
+    this.selectionEvent.subscribe((component : any) => {
+      this.changes.select(<EditComponent>this.editor.selection);
 
-        let modal : NgbModalRef = this.injector.get(NgbModal).open(OpenFileDialog, {});
+      this.currentComponent = component;
+    });
 
-        //modal.componentInstance.buttons = commands;
+    this.treeModel = {
+      root: [this.root],
+      dropAllowed: (node : any, parent : any) => {
+        let allow = !this.isChildOf(parent, node); // also works for ==
 
-        return modal.result.then(
-            (value) => {
-                if (value) {
-                    this.revert();
-                    this.setRoot(value);
+        if (allow)
+          allow = this.componentRegistry.find(node.id).isValidParent(parent.id); // valid...
 
-                    return value;
-                }
-            },
-            (reason) => {
-                return reason;
-            });
-    }
-
-    private load() : void {
-        this.openFile();
-    }
-
-    private save() {
-        let data = this.editorService.copyModel(this.root, true);
-
-        this.editorService.stripModel(data);
-
-        this.saveLocalJSON(data);
-
-        this.toasts.info("Saved...", undefined, 2000);
-
-        this.changes.clear();
-    }
-
-    private revert() {
-        this.currentComponent = undefined; // avoid problems with strange editor states?
-
-        this.changes.revert(); // what about the next change detector which should trigger
-    }
-
-    private isDirty() {
-        return this.changes.isDirty();
-    }
-
-    private setRoot(root : any) : void {
-        this.editorService.connectModel(root); // setup parent links and create defaults
-
-        this.root = root;
-
-        if (this.treeModel)
-            this.treeModel.root = [root];
-    }
-
-    private setup() : void {
-        this.confirm = {
-            position: 'right',
-            ok: "Yes",
-            cancel: "No",
-            title: "Delete Node",
-            message: "Really delete?",
-            onOk: () => {
-                this.deleteNode();
-            },
-            onCancel: () => {
-            },
-        };
-
-        this.selectionEvent.subscribe((component : any) => {
-            this.changes.select(<EditComponent>this.editor.selection);
-
-            this.currentComponent = component;
-        });
-
-        this.treeModel = {
-            root: [this.root],
-            dropAllowed: (node : any, parent : any) => {
-                let allow = !this.isChildOf(parent, node); // also works for ==
-
-                if (allow)
-                    allow = this.componentRegistry.find(node.id).isValidParent(parent.id); // valid...
-
-                return allow;
-            },
-            dropped: (node : any, parent : any) => {
-                this.reparent(node, parent);
-            },
-            context: this, // the label template will be able to reference this instance, e.g. createDragObject! + model!
-            label: `
+        return allow;
+      },
+      dropped: (node : any, parent : any) => {
+        this.reparent(node, parent);
+      },
+      context: this, // the label template will be able to reference this instance, e.g. createDragObject! + model!
+      label: `
             <span [drop-target]="node" [drag-source]="node">
                <span class="icon glyphicon glyphicon-{{getIcon(model)}}" [ngClass]=""></span>
                <span class="label">{{model.id}}</span>
                <span class="glyphicon glyphicon-remove" [confirm]="confirm" [ngStyle]="nodeStyle(model)" style="float: right"></span>
             </span>`,
-            onSelect: this.selectionEvent//comp => {this.selectionEvent.emit(comp);} (click)="deleteNode()"
-        };
+      onSelect: this.selectionEvent
+    };
 
-        this.setRoot(this.root);
-    }
+    this.setRoot(this.root);
+  }
 
-    // OnChanges
+  // OnChanges
 
-    ngOnChanges(changes : SimpleChanges) {
-        console.log("WTF");
-    }
+  ngOnChanges(changes : SimpleChanges) {
+    console.log("WTF");
+  }
 }
