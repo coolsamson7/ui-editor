@@ -14,7 +14,7 @@ A special property - '$children' references any component children.
 
 Let's look at a simplified example:
 
-The component 'label';
+The component 'label' as registered with a registry:
 
 ```typescript
   componentRegistry.register(template("label")
@@ -26,6 +26,9 @@ The component 'label';
                 // essential for drag & drop
                 .validParents('col', 'div', 'form', 'fieldset')
 ```
+
+Will be able to render the following palyload data.
+
 ```javacript
 {
    "$isa": "label", // the component reference
@@ -33,7 +36,14 @@ The component 'label';
 }
 ```
 
-A running demo can be seen [here](https://coolsamson7.github.io//ui-editor/).
+and will produce:
+
+```html
+<label>Hello World</label>
+```
+
+
+A running demo can be found [here](https://coolsamson7.github.io//ui-editor/).
 
 ## Features
 
@@ -51,7 +61,8 @@ The project is far away from being complete. Missing features are at least
 * a backend :-)
 * better property editors: font editor, color picker, box editor...
 * compound components
-* i18n support
+* i18n support for both editor as well as the rendering engine
+* support for business datatypes ( e.g. string 10 )
 * more components ( images, etc. )
 
 ## Internal classes
@@ -64,6 +75,7 @@ If you are just interested in the provided widgets, just go ahead.
 * In-Place editors
 * Context Menus
 * Drag & Drop 
+* Breadcrumb
 
 ## Project Setup
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
