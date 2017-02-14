@@ -16,7 +16,7 @@ export class Dialog {
   // instance data
 
   private title : string;
-  private dialogComponent : DialogComponent;
+  protected dialogComponent : DialogComponent;
 
   // constructor
 
@@ -35,6 +35,11 @@ export class Dialog {
 
     this.buildCommands();
   }
+
+
+   public executeCommand(command : any) {
+      return this.dialogComponent.executeCommand(command);
+   }
 
   // protected
 
@@ -123,6 +128,10 @@ export class DialogComponent implements AfterContentInit, OnInit, OnDestroy {
 
   // private
 
+   private findCommand(commandName : string) : any {
+     return this.buttons.find((button) => button.name === commandName);
+   }
+
   private cancelCommand() {
     return this.buttons.find((button) => button.isCancel);
   }
@@ -131,7 +140,10 @@ export class DialogComponent implements AfterContentInit, OnInit, OnDestroy {
     return this.buttons.find((button) => button.isDefault);
   }
 
-  private executeCommand(command : any) {
+  public executeCommand(command : any) {
+     if (typeof command === 'string')
+        command = this.findCommand(command);
+
     const result = command.run();
 
     this.activeModal.close(result);

@@ -23,6 +23,7 @@ import {EditComponent} from "./editor-edit-component.component";
 import {ReparentAction, EditorActionHistory} from "./editor-history.class";
 import {ToastService} from "../widgets/widgets-toast";
 import {Dialog, Dialogs} from "../widgets/widgets-dialog.component";
+import {DownloadService} from "../util/util-download";
 
 
 @Component({
@@ -30,6 +31,11 @@ import {Dialog, Dialogs} from "../widgets/widgets-dialog.component";
   template: `
 <dialog>
     <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
+    <h3>Samples</h3>
+    <ul>
+      <li style="cursor: hand" (click)="sample('rows')"><a>Rows</a></li>
+      <li style="cursor: hand" (click)="sample('login')"><a>Login Dialog</a></li>
+   </ul>
 </dialog>
 `
 })
@@ -49,14 +55,16 @@ export class OpenFileDialog extends Dialog {
   protected buildCommands() : Dialog {
     return this
       .addButton({
-        label: "Ok",
-        isDefault: true, // enter
-        shortCut: "enter",
-        run: () => {
-          return this.result;
-        }
+         name: 'ok',
+         label: "Ok",
+         isDefault: true, // enter
+         shortCut: "enter",
+         run: () => {
+           return this.result;
+         }
       })
       .addButton({
+         name: 'cancel',
         label: "Cancel",
         isCancel: true, // esc
         shortCut: "esc",
@@ -67,6 +75,235 @@ export class OpenFileDialog extends Dialog {
   }
 
   // callbacks
+
+   sample(sample : string) {
+     if (sample === 'rows') {
+        this.result = {
+           "id": "body",
+           "children": [
+              {
+                 "id": "row",
+                 "children": [
+                    {
+                       "id": "col",
+                       "columns": 12,
+                       "children": [
+                          {
+                             "id": "h1",
+                             "value": {
+                                "type": "value",
+                                "value": "Lot of rows"
+                             }
+                          }
+                       ]
+                    }
+                 ]
+              },
+              {
+                 "id": "row",
+                 "children": [
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 1 - col 1"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 1 - col 3"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 1 - col 5"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 1 - col 7"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 1 - col 9"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 1 - col 11"
+                             }
+                          }
+                       ]
+                    }
+                 ]
+              },
+              {
+                 "id": "row",
+                 "children": [
+                    {
+                       "id": "col",
+                       "offset": 2,
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 2 - col 4  / col offset is 2"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "columns": 4,
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 2 - col 6 / 4 columns wide"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 2 - col 9"
+                             }
+                          }
+                       ]
+                    },
+                    {
+                       "id": "col",
+                       "children": [
+                          {
+                             "id": "label",
+                             "value": {
+                                "type": "value",
+                                "value": "row 2 - col 11"
+                             }
+                          }
+                       ]
+                    }
+                 ]
+              }
+           ]
+        };
+     }
+     else if (sample === 'login') {
+        this.result =
+           {
+              "id": "body",
+              "children": [
+                 {
+                    "id": "div",
+                    "class": "container-fluid",
+                    "children": [
+                       {
+                          "id": "form",
+                          "children": [
+                             {
+                                "id": "div",
+                                "class": "form-group",
+                                "children": [
+                                   {
+                                      "id": "label",
+                                      "for": "user",
+                                      "value": {
+                                         "type": "value",
+                                         "value": "User"
+                                      }
+                                   },
+                                   {
+                                      "id": "input",
+                                      "model": "user",
+                                      "name": "user",
+                                      "class": "form-control"
+                                   }
+                                ]
+                             },
+                             {
+                                "id": "div",
+                                "class": "form-group",
+                                "children": [
+                                   {
+                                      "id": "label",
+                                      "for": "password",
+                                      "value": {
+                                         "type": "value",
+                                         "value": "Password"
+                                      }
+                                   },
+                                   {
+                                      "id": "input",
+                                      "model": "password",
+                                      "name": "password",
+                                      "class": "form-control"
+                                   }
+                                ]
+                             },
+                             {
+                                "id": "button",
+                                "text": {
+                                   "type": "value",
+                                   "value": "Login"
+                                },
+                                "click": "login()"
+                             }
+                          ]
+                       }
+                    ]
+                 }
+              ]
+           };
+     }
+
+      this.dialogComponent.executeCommand('ok');
+   }
 
   fileChangeEvent($event) {
     if ($event.target.files.length == 1) {
@@ -179,7 +416,57 @@ Injectable()
 export class UIEditorComponent implements OnChanges, FloaterContainer {
   // instance data
 
-  private root : any = {id: "body", children: []};
+  private root : any = {
+     "id": "body",
+     "children": [
+        {
+           "id": "row",
+           "children": [
+              {
+                 "id": "col",
+                 "columns": 12,
+                 "children": [
+                    {
+                       "id": "h1",
+                       "value": {
+                          "type": "value",
+                          "value": "Hello World"
+                       }
+                    }
+                 ]
+              }
+           ]
+        },
+        {
+           "id": "row",
+           "children": [
+              {
+                 "id": "col",
+                 "columns": 12,
+                 "children": [
+                    {
+                       "id": "label",
+                       "value": {
+                          "type": "value",
+                          "value": "Try to drag elements from the component palette to the middle view and modify properties of selected items accordingly."
+                       },
+                       "font": {
+                          "align": "center"
+                       }
+                    },
+                    {
+                       "id": "label",
+                       "value": {
+                          "type": "value",
+                          "value": "A couple of samples can be loaded by opening the open file dialog to the left."
+                       }
+                    }
+                 ]
+              }
+           ]
+        }
+     ]
+  };
 
   private currentComponent : any; // the internal object!
   private treeModel : any;
@@ -261,7 +548,7 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
   // constructor
 
-  constructor(private injector : Injector, private toasts : ToastService, private componentRegistry : ComponentRegistry, private editorService : EditorService, resolver : ComponentFactoryResolver, protected viewContainerRef : ViewContainerRef) {
+  constructor(private injector : Injector, private toasts : ToastService, private componentRegistry : ComponentRegistry, private editorService : EditorService, resolver : ComponentFactoryResolver, protected viewContainerRef : ViewContainerRef, private downloadService : DownloadService) {
     this.factory = resolver.resolveComponentFactory(Floater);
 
     this.changes = new EditorActionHistory(editorService);
@@ -337,8 +624,8 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
 
     if (!selected)
       return selected ? {} : {
-        display: 'none'
-      };
+          display: 'none'
+        };
   }
 
   deleteNode() {
@@ -346,28 +633,6 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
   }
 
   private confirm : any;
-
-
-  saveLocalJSON(data : any, filename = undefined) : void {
-    if (!filename)
-      filename = 'download.json';
-
-    if (typeof data === 'object')
-      data = JSON.stringify(data, undefined, 2);
-
-    let blob = new Blob([data], {type: 'text/json'});
-
-    let mouseEvent = document.createEvent('MouseEvents');
-
-    let a = document.createElement('a');
-
-    a.download = filename;
-    a.href = window.URL.createObjectURL(blob);
-
-    mouseEvent.initEvent('click', true, true);
-
-    a.dispatchEvent(mouseEvent);
-  };
 
   openFile() {
     return this.injector.get(Dialogs).open(OpenFileDialog).then(
@@ -389,11 +654,11 @@ export class UIEditorComponent implements OnChanges, FloaterContainer {
   }
 
   private save() {
-    let data = this.editorService.copyModel(this.root, true);
+    const data = this.editorService.copyModel(this.root, true);
 
     this.editorService.stripModel(data);
 
-    this.saveLocalJSON(data);
+    this.downloadService.downloadJSON(data, 'download.json');
 
     this.toasts.info("Saved...", undefined, 2000);
 

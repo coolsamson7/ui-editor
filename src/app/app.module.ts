@@ -55,7 +55,7 @@ import {
     EditableH4,
     EditableH5,
     EditableButton
-} from "./widgets/ui-inplace-edit";
+} from "./widgets/widgets-inplace-edit";
 import {TriangleComponent, Confirm, ConfirmWindow, MenuContent, ContextMenu} from "./widgets/widgets-context-menu";
 import {Tooltip, TooltipComponent} from "./widgets/widgets-tooltip";
 import {FocusDirective} from "./util/util-focus";
