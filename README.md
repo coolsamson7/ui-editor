@@ -1,5 +1,20 @@
 # UiEditor
 
+UIEditor is a wisiwyg html editor implemented with AngularJS 2.x. The available components - as seen in the palette to the left - can be dragged onto the main area - or alternatively the component tree - and will be instanciated as children of the corresponding parent element. A property editor onn the right side is used to modify corresponding properties. These are either normal html properties or properties which make sense in an Angular environment - e.g. 'click'.
+Layout elements - such as rows and columns  are based on bootstrap 3.x.
+
+## Basic Idea
+
+The basic idea is a rendering engine, that knows about different types of components as organized in a central component registry. Every component is defined by
+* a number of properties ( with corresponding type information ), and
+* a template string containing static content as well as placeholders that will be filled by dynamic data.
+
+The payload data on the other hand is a simple javascript object referencing the component type and specific property values.
+A special property - '$children' references any component children.
+
+Let's look at a simple example:
+
+## Project Setup
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
 
 ## Development server
