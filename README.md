@@ -12,7 +12,58 @@ The basic idea is a rendering engine, that knows about different types of compon
 The payload data on the other hand is a simple javascript object referencing the component type and specific property values.
 A special property - '$children' references any component children.
 
-Let's look at a simple example:
+Let's look at a simplified example:
+
+The component 'label';
+
+```typescript
+  componentRegistry.register(template("label")
+                // the template
+                .renderTemplate("<label>$value$</label>")
+                // property editors will use this information
+                .setLabel("Label")
+                .group('Widgets')
+                // essential for drag & drop
+                .validParents('col', 'div', 'form', 'fieldset')
+```
+```javacript
+{
+   "$isa": "label", // the component reference
+   "value": "Hello World" // a property
+}
+```
+
+A running demo can be seen [here](https://coolsamson7.github.io//ui-editor/).
+
+## Features
+
+* Support for shortcuts ( ctrl+z, del )
+* Undo mechanism ( try  ctrl+z )
+* Inplace edit for most string based widgets ( e.g. label, h1 )
+* Generic component registry with support for
+   * custom property renders
+   * custom property editors
+   * properties that reference either plain values or angular bindings
+
+## Missing
+
+The project is far away from being complete. Missing features are at least
+* a backend :-)
+* better property editors: font editor, color picker, box editor...
+* compound components
+* i18n support
+* more components ( images, etc. )
+
+## Internal classes
+
+If you are just interested in the provided widgets, just go ahead. 
+* Tree
+* Splitter
+* Floating windows
+* Tabs
+* In-Place editors
+* Context Menus
+* Drag & Drop 
 
 ## Project Setup
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
