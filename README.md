@@ -25,9 +25,13 @@ The component 'label' as registered with a registry:
                 .group('Widgets')
                 // essential for drag & drop
                 .validParents('col', 'div', 'form', 'fieldset')
+                // properties
+                .register(property("value")
+                    .tooltip("the label content") // used by the property editor
+                    .setDefault("") // if the payload does not cotain a value this default ill be used instead
 ```
 
-Will be able to render the following palyload data.
+will be able to render the following payload data.
 
 ```javacript
 {
