@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "projects": {
+    "ui-editor": {
+      "projectType": "application",
+      "root": "apps/ui-editor",
+      "sourceRoot": "apps/ui-editor/src",
+      "prefix": "ui-editor",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ui-editor",
+            "index": "apps/ui-editor/src/index.html",
+            "main": "apps/ui-editor/src/main.ts",
+            "polyfills": "apps/ui-editor/src/polyfills.ts",
+            "tsConfig": "apps/ui-editor/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/ui-editor/src/favicon.ico",
+              "apps/ui-editor/src/assets"
+            ],
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/ui-editor/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/ui-editor/src/environments/environment.ts",
+                  "with": "apps/ui-editor/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "hmr": false
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ui-editor:build:production"
+            },
+            "development": {
+              "browserTarget": "ui-editor:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ui-editor:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ui-editor/src/**/*.ts",
+              "apps/ui-editor/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ui-editor"],
+          "options": {
+            "jestConfig": "apps/ui-editor/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "ui-editor-e2e": {
+      "root": "apps/ui-editor-e2e",
+      "sourceRoot": "apps/ui-editor-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ui-editor-e2e/cypress.json",
+            "tsConfig": "apps/ui-editor-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ui-editor:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ui-editor:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/ui-editor-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "ui-editor"
+}

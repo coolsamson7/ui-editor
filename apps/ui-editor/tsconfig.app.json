@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "strictPropertyInitialization": false,
+    "strictFunctionTypes": false,
+    "strictNullChecks": false,
+    "outDir": "../../dist/out-tsc",
+    "types": []
+  },
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false,
+    "fullTemplateTypeCheck": false,
+    "strictInjectionParameters": false
+  }
+}
